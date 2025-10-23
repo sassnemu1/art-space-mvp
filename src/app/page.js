@@ -1,95 +1,130 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import HeroSection from '../components/HeroSection';
+import ContentSection from '../components/HomePage/ContentSection/ContentSection';
+import TimelineSection from '@/components/HomePage/TimelineSection/TimelineSection';
+import VeraAwardSection from '@/components/HomePage/VeraAwardSection/VeraAwardSection';
+import Footer from '@/components/Footer/Footer';
+import NewsSection from '@/components/HomePage/NewsSection/NewsSection';
 
-export default function Home() {
+// import { getHomePageData, testWordPressConnection } from '../lib/wordpress';
+
+// Загрузка данных из WordPress
+// async function getPageData() {
+//   // Проверяем соединение
+//   const isConnected = await testWordPressConnection();
+//   if (!isConnected) {
+//     return null;
+//   }
+//   return await getHomePageData();
+// }
+
+// ✅ Данные выставок
+const exhibitionsData = [
+  {
+    id: 1,
+    title: "Капитан Кусто в России",
+    dates: "24.10 - 30.11",
+    year: "2025",
+    description: "Экспонаты из семейной коллекции Франсин Кусто (Франция)",
+    image: "/exhibitions/kusto-v-rossii.png",
+    category: "Историческое событие",
+    location: "4 Этаж",
+    link: "#"
+  },
+  {
+    id: 2,
+    title: "AI Summit Creative",
+    dates: "30.10 - 6.11",
+    year: "2025",
+    description: "Выставка цифрового искусства, созданного с использованием AI.",
+    image: "/exhibitions/ai-summit.png",
+    category: "AI Конфиренция",
+    location: "Все залы",
+    link: "#"
+  },
+  {
+    id: 3,
+    title: "Три Востока",
+    dates: "20.11 - 6.12",
+    year: "2025",
+    description: "Масштабная выставка культурного наследия Востока.",
+    image: "/exhibitions/tri-vostoka.png",
+    category: "Культурное наследие",
+    location: "3 этаж",
+    link: "#"
+  }
+];
+
+export default async function HomePage() {
+  // const homeData = await getPageData();
+  const data = {
+    mode: 'sequence',
+    frameCount: 1500
+  }
+  
+
+  // Fallback данные (если WordPress недоступен)
+  const fallbackData = {
+    heroFields: {
+      heroMode: 'sequence',
+      heroFrameCount: 1500
+    },
+    contentFields: {
+      contentFrameCount: 1000,
+      switchFrame: 150,
+      firstTitle: 'Искусство будущего',
+      secondTitle: 'Цифровая революция',
+      firstSubtitle: 'Погружение в мир цифрового творчества',
+      secondSubtitle: 'Трансформация визуального языка',
+      firstDescription: 'Откройте для себя новые горизонты современного искусства, где технологии становятся кистью художника.',
+      secondDescription: 'Исследуйте эволюцию художественного выражения через призму современных технологий.'
+    }
+  };
+
+  console.log(data.mode);
+  
+
+  // const data = homeData || fallbackData;
+  // const data = homeData 
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      {/* <HeroSection 
+        mode={data.heroFields?.heroMode}
+        frameCount={data.heroFields?.heroFrameCount}
+      /> */}
+      <HeroSection 
+        mode={data.mode}
+        frameCount={data.frameCount}
+      />
+      
+      <ContentSection
+        id="about-section"
+      />
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <TimelineSection 
+        exhibitions={exhibitionsData}
+        label="Календарь событий"
+        title="Выставки 2025"
+        subtitle="Исследуйте наши предстоящие выставки"
+      />
+
+      <VeraAwardSection />
+
+      <NewsSection />
+      
+      <Footer />
+    </>
   );
 }
+
+// Настройки статической генерации
+// export const revalidate = 60; // ISR каждую минуту
+
+// SEO метаданные из WordPress
+// export async function generateMetadata() {
+//   const homeData = await getPageData();
+  
+//   return {
+//     title: homeData?.seo?.title || 'ART-Space | Искусство будущего',
+//     description: homeData?.seo?.metaDesc || 'Цифровое искусство и интерактивные технологии',
+//   };
+// }

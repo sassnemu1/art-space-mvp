@@ -1,0 +1,1113 @@
+/* Terminal Industries Header */
+.terminal-header {
+  position: fixed;
+  top: 24px;
+  z-index: 1000;
+  padding: 0 clamp(20px, 4vw, 60px);
+  width: 100%;
+  animation: fadeSlideDown 0.4s ease-out;
+
+}
+
+.terminal-nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 28px;
+  background: rgba(45, 45, 45, 0.857);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 1050px;
+  margin: 0 auto;
+  
+}
+
+/* Логотип */
+.terminal-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1002;
+}
+
+.terminal-logo-icon {
+  width: 24px;
+  height: 24px;
+  background: #ffffff;
+  color: #2a2a2a;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: system-ui, sans-serif;
+}
+
+.terminal-logo-text {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  font-family: system-ui, sans-serif;
+}
+
+/* Навигация */
+.terminal-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+.terminal-nav-item {
+  position: relative;
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 9px 18px;
+  margin-left: 4px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: system-ui, sans-serif;
+}
+
+.terminal-nav-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.terminal-nav-item--active {
+  border: 1px solid #808080;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* macOS кнопка меню */
+.menu-button-container {
+  position: relative;
+}
+
+.macos-menu-button {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+  z-index: 1002;
+}
+
+.macos-menu-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.05);
+}
+
+.macos-menu-button:active {
+  transform: scale(0.95);
+}
+
+.macos-menu-button__line {
+  width: 16px;
+  height: 1.5px;
+  background: #ffffff;
+  border-radius: 1px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* Анимация hamburger -> X */
+.macos-menu-button--open .macos-menu-button__line--top {
+  transform: translateY(4.5px) rotate(45deg);
+}
+
+.macos-menu-button--open .macos-menu-button__line--middle {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.macos-menu-button--open .macos-menu-button__line--bottom {
+  transform: translateY(-4.5px) rotate(-45deg);
+}
+
+/* ОСНОВНОЕ МЕНЮ */
+.liquid-glass-menu--menu-width {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 320px;
+  width: 100%;
+  max-width: 800px;
+  min-width: 700px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px) scale(0.98);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  z-index: 1001;
+  pointer-events: none;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  transform-origin: top right;
+  will-change: transform, filter;
+  
+  --mouse-x: 50%;
+  --mouse-y: 30%;
+  --mouse-x-px: 400px;
+  --mouse-y-px: 120px;
+}
+
+.liquid-glass-menu--menu-width.liquid-glass-menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.liquid-glass-menu--menu-width.liquid-glass-menu--tracking {
+  transform: translateY(-2px) scale(1.005);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* МЕНЮ САЙТОВ */
+.liquid-glass-sites-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 300px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-15px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  transition-delay: 0.1s;
+  z-index: 1002;
+  pointer-events: none;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  transform-origin: top right;
+  will-change: transform, filter;
+  
+  --mouse-x: 50%;
+  --mouse-y: 30%;
+  --mouse-x-px: 150px;
+  --mouse-y-px: 80px;
+}
+
+.liquid-glass-sites-menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.liquid-glass-sites-menu--tracking {
+  transform: translateY(-1px) scale(1.01);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* EXHIBITION PREVIEW CARD - ИСПРАВЛЕНО */
+.exhibition-card {
+  position: absolute; /* ДОБАВЛЕНО: positioned родитель для badge */
+  top: calc(100% + 200px);
+  right: 320px;
+  width: 100%;
+  max-width: 800px;
+  min-width: 700px;
+  height: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px) scale(0.98);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  transition-delay: 0.25s;
+  z-index: 1000;
+  pointer-events: none;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  transform-origin: top right;
+  will-change: transform, filter;
+  text-decoration: none;
+  color: inherit;
+  
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --mouse-x-px: 400px;
+  --mouse-y-px: 100px;
+}
+
+.exhibition-card--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.exhibition-card--tracking {
+  transform: translateY(-2px) scale(1.005);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* LIQUID GLASS BACKGROUND */
+.liquid-glass-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.liquid-glass-background__base {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+.liquid-glass-background__volume {
+  position: absolute;
+  inset: 1px;
+  background: rgba(255, 255, 255, 0.015);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: 19px;
+  box-shadow: 
+    inset 0 0 15px -8px rgba(255, 255, 255, 0.15),
+    inset 1px 1px 6px rgba(255, 255, 255, 0.05);
+}
+
+.liquid-glass-background__refraction {
+  position: absolute;
+  inset: 2px;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 18px;
+  filter: url(#realistic-liquid-distortion);
+  mix-blend-mode: overlay;
+  transition: all 0.3s ease;
+  transform-origin: var(--mouse-x) var(--mouse-y);
+  opacity: 0.6;
+}
+
+.liquid-glass-background__caustics {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 50px 30px at var(--mouse-x) var(--mouse-y), 
+      rgba(255, 255, 255, 0.06) 0%, 
+      rgba(255, 255, 255, 0.02) 40%, 
+      transparent 70%);
+  border-radius: 20px;
+  filter: url(#caustics-pattern);
+  mix-blend-mode: screen;
+  opacity: 0.4;
+  transition: all 0.2s ease;
+}
+
+.liquid-glass-background__surface-tension {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  filter: url(#surface-tension);
+  background: rgba(255, 255, 255, 0.008);
+}
+
+.liquid-glass-background__chromatic {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.005);
+  mix-blend-mode: difference;
+  opacity: 0.3;
+}
+
+.liquid-glass-background__specular {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.12) 0%, 
+      rgba(255, 255, 255, 0.04) 25%, 
+      transparent 50%),
+    radial-gradient(circle at var(--mouse-x) var(--mouse-y), 
+      rgba(255, 255, 255, 0.15) 0%, 
+      rgba(255, 255, 255, 0.05) 35%, 
+      transparent 70%);
+  border-radius: 20px;
+  filter: url(#light-refraction);
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.liquid-glass-background__depth-1 {
+  position: absolute;
+  inset: 3px;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 17px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 
+    inset -8px -6px 0px -9px rgba(255, 255, 255, 0.25),
+    inset 0px -10px 0px -6px rgba(255, 255, 255, 0.15);
+  opacity: 0.4;
+}
+
+.liquid-glass-background__depth-2 {
+  position: absolute;
+  inset: 5px;
+  background: rgba(255, 255, 255, 0.005);
+  border-radius: 15px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  box-shadow: 
+    inset -6px -4px 0px -7px rgba(255, 255, 255, 0.3),
+    inset 1px 1px 4px rgba(255, 255, 255, 0.08);
+  opacity: 0.3;
+}
+
+.liquid-glass-background__cursor-physics {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: calc(var(--mouse-x-px) - 15px);
+  top: calc(var(--mouse-y-px) - 15px);
+  background: 
+    radial-gradient(circle,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 40%,
+      transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.12s ease-out;
+  mix-blend-mode: screen;
+  filter: blur(0.8px);
+}
+
+/* Enhanced tracking effects */
+.liquid-glass-menu--menu-width.liquid-glass-menu--tracking .liquid-glass-background__base,
+.liquid-glass-sites-menu--tracking .liquid-glass-background__base,
+.exhibition-card--tracking .liquid-glass-background__base {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 15px 50px rgba(0, 0, 0, 0.45),
+    0 6px 25px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.liquid-glass-menu--menu-width.liquid-glass-menu--tracking .liquid-glass-background__cursor-physics,
+.liquid-glass-sites-menu--tracking .liquid-glass-background__cursor-physics,
+.exhibition-card--tracking .liquid-glass-background__cursor-physics {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* КОНТЕНТ ОСНОВНОГО МЕНЮ */
+.liquid-glass-menu__content--sections {
+  display: flex;
+  gap: 2px;
+  padding: 16px;
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.liquid-glass-menu__section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: liquidGlassSectionEnter 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: calc(var(--section-index) * 0.08s);
+}
+
+.liquid-glass-menu__section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.liquid-glass-menu__section-icon {
+  font-size: 16px;
+  width: 18px;
+  text-align: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.liquid-glass-menu__section-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.liquid-glass-menu__section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.liquid-glass-menu__item--compact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: liquidGlassItemEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: calc(var(--item-index) * 0.025s);
+}
+
+.liquid-glass-menu__item--compact:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transform: translateX(4px) scale(1.02);
+}
+
+.liquid-glass-menu__item--compact .liquid-glass-menu__icon {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-menu__item--compact .liquid-glass-menu__label {
+  flex: 1;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-menu__item--compact .liquid-glass-menu__arrow {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-menu__item--compact:hover .liquid-glass-menu__arrow {
+  opacity: 1;
+  transform: translateX(0) scale(1.1);
+}
+
+/* КОНТЕНТ МЕНЮ САЙТОВ */
+.liquid-glass-sites-menu__content {
+  position: relative;
+  z-index: 10;
+  padding: 14px;
+  height: 466px;
+  isolation: isolate;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.liquid-glass-sites-menu__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: rgba(100, 150, 255, 0.08);
+  border-bottom: 1px solid rgba(100, 150, 255, 0.15);
+}
+
+.liquid-glass-sites-menu__header-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.liquid-glass-sites-menu__header-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.liquid-glass-sites-menu__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.liquid-glass-sites-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: liquidGlassItemEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: calc(0.2s + var(--item-index) * 0.06s);
+}
+
+.liquid-glass-sites-menu__item-icon {
+  font-size: 16px;
+  width: 18px;
+  text-align: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-sites-menu__item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-sites-menu__item-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.liquid-glass-sites-menu__item-desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  line-height: 1.2;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.liquid-glass-sites-menu__item-arrow {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-sites-menu__item:hover {
+  background: var(--item-color);
+  color: #ffffff;
+  transform: translateX(3px) scale(1.02);
+  box-shadow: 
+    0 4px 14px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 10px var(--item-color);
+}
+
+.liquid-glass-sites-menu__item:hover .liquid-glass-sites-menu__item-desc {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.liquid-glass-sites-menu__item:hover .liquid-glass-sites-menu__item-icon {
+  transform: scale(1.1) rotate(1deg);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.liquid-glass-sites-menu__item:hover .liquid-glass-sites-menu__item-arrow {
+  opacity: 1;
+  transform: translateX(0) scale(1.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.liquid-glass-sites-menu__item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--item-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.liquid-glass-sites-menu__item:hover::before {
+  width: 110%;
+  height: 110%;
+  border-radius: 10px;
+}
+
+/* EXHIBITION CARD СТИЛИ - ИСПРАВЛЕНО */
+.exhibition-card--open {
+  position: absolute;
+  top: 310px;
+}
+.exhibition-card__background {
+  position: absolute;
+  top: 120px;
+  inset: 0;
+  z-index: 1;
+}
+
+.exhibition-card__image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.1);
+  transition: all 0.4s ease;
+}
+
+.exhibition-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.8) 100%);
+}
+
+/* BADGE - ИСПРАВЛЕН: ТЕПЕРЬ POSITIONED ОТНОСИТЕЛЬНО exhibition-card */
+.exhibition-card__badge {
+  position: absolute;
+  top: 20px; /* ТЕПЕРЬ РАБОТАЕТ! */
+  right: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 20; /* Поверх всего контента */
+  
+  /* Анимация появления */
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: exhibitionBadgeEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.6s;
+}
+
+.exhibition-card__content {
+  position: relative; /* УБРАН ABSOLUTE */
+  z-index: 10;
+  padding: 14px 28px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  isolation: isolate;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  
+  opacity: 0;
+  transform: translateY(10px);
+  animation: exhibitionCardContentEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.5s;
+}
+
+.exhibition-card__text {
+  flex: 1;
+}
+
+.exhibition-card__title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.exhibition-card__subtitle {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.exhibition-card__description {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.exhibition-card__details {
+  display: flex;
+  gap: 20px;
+  margin: 16px 0 10px 0;
+}
+
+.exhibition-card__date,
+.exhibition-card__location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.exhibition-card__date-icon,
+.exhibition-card__location-icon {
+  font-size: 13px;
+}
+
+.exhibition-card__cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.exhibition-card__cta-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.exhibition-card__cta-arrow {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 18px;
+  color: #ffffff;
+}
+
+/* ENHANCED HOVER для Exhibition Card */
+.exhibition-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 8px 30px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+.exhibition-card:hover .exhibition-card__image {
+  transform: scale(1.05);
+}
+
+.exhibition-card:hover .exhibition-card__cta {
+  opacity: 1;
+}
+
+.exhibition-card:hover .exhibition-card__cta-arrow {
+  opacity: 1;
+  transform: translateX(0) scale(1.1);
+}
+
+.exhibition-card:hover .exhibition-card__badge {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(0) scale(1.05);
+}
+
+.exhibition-card:active {
+  transform: translateY(-2px) scale(1.005);
+  transition: all 0.1s ease;
+}
+
+/* Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+}
+
+.menu-overlay--active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Keyframes */
+@keyframes liquidGlassItemEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes liquidGlassSectionEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes exhibitionCardContentEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes exhibitionBadgeEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideDown {
+  from { 
+    opacity: 0;
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+
+/* Скрываем SVG фильтры */
+.liquid-glass-filters {
+  display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .liquid-glass-menu--menu-width {
+    min-width: 600px;
+    right: 280px;
+  }
+  
+  .liquid-glass-sites-menu {
+    width: 260px;
+  }
+  
+  .exhibition-card {
+    max-width: 600px;
+    min-width: 600px;
+    right: 280px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .terminal-header {
+    top: 16px;
+    padding: 0 16px;
+  }
+  
+  .terminal-nav-container {
+    padding: 12px 20px;
+  }
+  
+  .terminal-nav {
+    gap: 1px;
+  }
+  
+  .terminal-nav-item {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  
+  .terminal-logo-text {
+    font-size: 16px;
+  }
+  
+  .liquid-glass-menu--menu-width {
+    min-width: 500px;
+    right: 240px;
+  }
+  
+  .liquid-glass-sites-menu {
+    width: 220px;
+  }
+  
+  .exhibition-card {
+    max-width: 500px;
+    min-width: 500px;
+    right: 240px;
+  }
+  
+  .liquid-glass-menu__content--sections {
+    gap: 1px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .liquid-glass-menu--menu-width {
+    right: 0;
+    top: calc(100% + 12px);
+    min-width: 400px;
+  }
+  
+  .liquid-glass-sites-menu {
+    right: 0;
+    top: calc(100% + 240px);
+    width: 400px;
+    transition-delay: 0.2s;
+  }
+  
+  .exhibition-card {
+    right: 0;
+    top: calc(100% + 460px);
+    max-width: 400px;
+    min-width: 400px;
+    height: 180px;
+  }
+  
+  .liquid-glass-menu__content--sections {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .liquid-glass-menu__section {
+    flex: none;
+  }
+  
+  .exhibition-card__content {
+    padding: 20px 22px;
+  }
+  
+  .exhibition-card__title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .terminal-nav-container {
+    padding: 10px 16px;
+  }
+  
+  .terminal-nav-item {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+  
+  .terminal-logo-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 700px) {
+  .terminal-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .liquid-glass-menu--menu-width {
+    min-width: 300px;
+    left: -250px;
+    right: auto;
+  }
+  
+  .liquid-glass-sites-menu {
+    width: 300px;
+    left: -250px;
+    right: auto;
+    top: calc(100% + 200px);
+  }
+  
+  .exhibition-card {
+    left: -250px;
+    right: auto;
+    max-width: 300px;
+    min-width: 300px;
+    height: 200px;
+    top: calc(100% + 380px);
+  }
+  
+  .exhibition-card__details {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .exhibition-card__content {
+    padding: 18px 20px;
+  }
+  
+  .exhibition-card__badge {
+    top: 16px;
+    right: 18px;
+  }
+}

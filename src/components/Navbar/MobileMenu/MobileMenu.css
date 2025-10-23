@@ -1,0 +1,187 @@
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  /* ✅ Используем 100svh для мобильных браузеров */
+  height: 100svh;
+  min-height: -webkit-fill-available;
+  background: rgba(10, 10, 10, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000; /* ✅ Выше всего */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mobile-menu--open {
+  transform: translateX(0);
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-menu-nav {
+  padding: 80px 20px 20px 20px; /* ✅ Уменьшил отступ сверху */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mobile-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobile-menu-item {
+  margin: 0;
+}
+
+.mobile-menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mobile-menu-link:active {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(0.98);
+}
+
+.mobile-menu-link-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.mobile-menu-link svg {
+  color: #888;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mobile-menu-link:active svg {
+  transform: translateX(4px);
+}
+
+.mobile-menu-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
+}
+
+.mobile-menu-address {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #aaa;
+  margin: 0;
+}
+
+.mobile-menu-address svg {
+  color: #888;
+  flex-shrink: 0;
+}
+
+/* Scrollbar */
+.mobile-menu::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ Поддержка iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  .mobile-menu {
+    height: -webkit-fill-available;
+  }
+}
+
+/* ✅ Современные браузеры с dvh */
+@supports (height: 100dvh) {
+  .mobile-menu {
+    height: 100dvh;
+  }
+}
+
+/* ✅ Safe area для iPhone */
+@supports (padding: env(safe-area-inset-top)) {
+  .mobile-menu-nav {
+    padding-top: max(80px, env(safe-area-inset-top) + 60px);
+  }
+  
+  .mobile-menu-footer {
+    padding-bottom: max(20px, env(safe-area-inset-bottom) + 10px);
+  }
+}
+
+/* ✅ Маленькие экраны */
+@media (max-height: 667px) {
+  .mobile-menu-nav {
+    padding: 70px 20px 15px 20px;
+    justify-content: flex-start;
+  }
+  
+  .mobile-menu-link {
+    padding: 14px 20px;
+  }
+  
+  .mobile-menu-link-text {
+    font-size: 17px;
+  }
+  
+  .mobile-menu-list {
+    gap: 10px;
+  }
+}
+
+/* ✅ Очень маленькие экраны (iPhone SE) */
+@media (max-height: 600px) {
+  .mobile-menu-nav {
+    padding: 60px 20px 10px 20px;
+  }
+  
+  .mobile-menu-link {
+    padding: 12px 18px;
+  }
+  
+  .mobile-menu-list {
+    gap: 8px;
+  }
+}
+
+/* ✅ Большие экраны */
+@media (min-height: 800px) {
+  .mobile-menu-nav {
+    padding: 100px 20px 30px 20px;
+  }
+  
+  .mobile-menu-link {
+    padding: 22px 26px;
+  }
+  
+  .mobile-menu-list {
+    gap: 16px;
+  }
+}

@@ -1,0 +1,382 @@
+/* ===== VERA AWARD SECTION ===== */
+.vera-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #353535 50%, #0a0a0a 100%);
+  color: #ffffff;
+  overflow: hidden;
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+
+.vera-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 60px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(60px, 8vw, 100px);
+  align-items: center;
+  z-index: 10;
+}
+
+/* ===== CONTENT COLUMN ===== */
+.vera-content {
+  position: relative;
+}
+
+.vera-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, 
+    rgba(212, 175, 55, 0.15) 0%,
+    rgba(212, 175, 55, 0.05) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #907f48;
+  margin-bottom: 32px;
+}
+
+.vera-badge svg {
+  width: 16px;
+  height: 16px;
+}
+
+.vera-title {
+  font-size: clamp(48px, 8vw, 88px);
+  font-weight: 900;
+  line-height: 1;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.02em;
+}
+
+.vera-title-highlight {
+  display: inline-block;
+  background: linear-gradient(135deg, #907f48 0%, #b19f64 50%, #cdc096 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.vera-title-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #907f48 0%, transparent 100%);
+  border-radius: 2px;
+}
+
+.vera-subtitle {
+  font-size: clamp(18px, 2.5vw, 24px);
+  line-height: 1.4;
+  color: #ccc;
+  margin: 0 0 32px 0;
+  font-weight: 500;
+}
+
+.vera-description {
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: 1.7;
+  color: #999;
+  margin: 0 0 48px 0;
+  max-width: 600px;
+}
+
+/* ===== STATISTICS ===== */
+.vera-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.vera-stat-item {
+  position: relative;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.vera-stat-item:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.3);
+  transform: translateY(-4px);
+}
+
+.vera-stat-number {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  color: #907f48;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.vera-stat-label {
+  font-size: 14px;
+  color: #888;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BUTTONS ===== */
+.vera-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.vera-button {
+  
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.vera-button--primary {
+  /* Золотой */
+  background: linear-gradient(135deg, #907f48 0%, #d4c467 100%);
+  /* background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%); */
+  color: #0a0a0a;
+  border: none;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+}
+
+.vera-button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.4);
+}
+
+.vera-button--secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.vera-button--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== DATES ===== */
+.vera-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vera-dates-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #aaa;
+}
+
+.vera-dates-item svg {
+  flex-shrink: 0;
+  color: #907f48;
+}
+
+/* ===== 3D CANVAS ===== */
+.vera-canvas-container {
+  position: relative;
+  height: 600px;
+}
+
+.vera-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, 
+    rgba(212, 175, 55, 0.05) 0%, 
+    transparent 70%);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.vera-canvas-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  font-size: 14px;
+  color: #aaa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* ===== CANVAS DECORATIONS ===== */
+.vera-canvas-decoration {
+  position: absolute;
+  inset: -50px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.vera-canvas-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 50%;
+  animation: ringRotate 20s linear infinite;
+}
+
+.vera-canvas-ring--1 {
+  width: 220%;
+  height: 120%;
+  animation-duration: 20s;
+}
+
+.vera-canvas-ring--2 {
+  width: 240%;
+  height: 140%;
+  animation-duration: 30s;
+  animation-direction: reverse;
+}
+
+.vera-canvas-ring--3 {
+  width: 260%;
+  height: 160%;
+  animation-duration: 40s;
+}
+
+@keyframes ringRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ===== BACKGROUND ===== */
+.vera-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.vera-bg-gradient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.vera-bg-gradient--1 {
+  top: 20%;
+  left: 10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  animation: bgFloat1 15s ease-in-out infinite;
+}
+
+.vera-bg-gradient--2 {
+  bottom: 10%;
+  right: 10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(137, 43, 226, 0.056) 0%, transparent 70%);
+  animation: bgFloat2 20s ease-in-out infinite;
+}
+
+@keyframes bgFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(50px, -30px); }
+}
+
+@keyframes bgFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-40px, 40px); }
+}
+
+.vera-bg-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px, 80px 80px;
+  opacity: 0.5;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .vera-container {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .vera-canvas-container {
+    height: 500px;
+  }
+
+  .vera-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .vera-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .vera-stat-item {
+    padding: 16px;
+  }
+
+  .vera-buttons {
+    flex-direction: column;
+  }
+
+  .vera-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vera-canvas-container {
+    height: 400px;
+  }
+
+  .vera-canvas-ring {
+    display: none;
+  }
+}
+
