@@ -235,7 +235,7 @@ export default function ContentSection({
             </div>
             <div className="about-image">
               <img 
-                src="/seq/output_0001.webp" 
+                src="/assets/floor/floor-3.webp" 
                 alt="ART-Space Exhibition"
                 loading={isMobile ? "lazy" : "eager"}
               />

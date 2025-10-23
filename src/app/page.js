@@ -58,7 +58,7 @@ export default async function HomePage() {
   // const homeData = await getPageData();
   const data = {
     mode: 'sequence',
-    frameCount: 1500
+    frameCount: 1400
   }
   
 
