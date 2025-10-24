@@ -52,8 +52,8 @@ export default function Footer() {
               <ul className="footer-nav-list">
                 <li><a href="#hero">Главная</a></li>
                 <li><a href="#content-section">О нас</a></li>
-                <li><a href="#timeline-section">Выставки</a></li>
-                <li><a href="#vera-award-section">Премия VERA</a></li>
+                <li><a href="#timeline-section">Афиша</a></li>
+                <li><a href="https://vera.art-space.world">Премия VERA</a></li>
               </ul>
             </div>
 
@@ -61,9 +61,9 @@ export default function Footer() {
               <h3 className="footer-nav-title">Информация</h3>
               <ul className="footer-nav-list">
                 <li><a href="/gallery">Галерея</a></li>
-                <li><a href="/artists">Художники</a></li>
+                <li><a href="#">Художники</a></li>
                 <li><a href="/events">События</a></li>
-                <li><a href="/contacts">Контакты</a></li>
+                <li><a href="/contact">Контакты</a></li>
               </ul>
             </div>
 
@@ -87,7 +87,7 @@ export default function Footer() {
             <h3 className="footer-social-title">Мы в соцсетях</h3>
             <div className="footer-social-links">
               <a 
-                href="https://t.me/artspace" 
+                href="https://t.me/tandcaward" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="footer-social-link"
@@ -100,7 +100,7 @@ export default function Footer() {
               </a>
               
               <a 
-                href="https://vk.com/artspace" 
+                href="https://vk.com/tandcaward" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="footer-social-link"
@@ -113,7 +113,7 @@ export default function Footer() {
               </a>
               
               <a 
-                href="https://instagram.com/artspace" 
+                href="https://www.instagram.com/artspace.world_/?igsh=bjA3aTlicDZ0YnVs#" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="footer-social-link"
@@ -125,7 +125,7 @@ export default function Footer() {
                 </svg>
               </a>
               
-              <a 
+              {/* <a 
                 href="https://youtube.com/@artspace" 
                 target="_blank" 
                 rel="noopener noreferrer"
@@ -136,7 +136,7 @@ export default function Footer() {
                   <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.19 15.19C15.88 15.5 15.38 15.71 14.54 15.76C13.68 15.81 11.55 15.81 10.46 15.76C9.62 15.71 9.12 15.5 8.81 15.19C8.5 14.88 8.29 14.38 8.24 13.54C8.19 12.68 8.19 10.55 8.24 9.46C8.29 8.62 8.5 8.12 8.81 7.81C9.12 7.5 9.62 7.29 10.46 7.24C11.55 7.19 13.68 7.19 14.54 7.24C15.38 7.29 15.88 7.5 16.19 7.81C16.5 8.12 16.71 8.62 16.76 9.46C16.81 10.55 16.81 12.68 16.76 13.54C16.71 14.38 16.5 14.88 16.19 15.19ZM10.5 13.5L14.5 11.5L10.5 9.5V13.5Z" 
                         fill="currentColor"/>
                 </svg>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

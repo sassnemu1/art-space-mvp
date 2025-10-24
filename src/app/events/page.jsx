@@ -1,128 +1,226 @@
 "use client";
 
-import { useRef } from "react";
-import dynamic from 'next/dynamic';
+import { useState, useEffect } from "react";
+import Footer from '@/components/Footer/Footer';
 import './events.css';
 
-// Lazy load Footer
-const Footer = dynamic(() => import('@/components/Footer/Footer'), {
-  loading: () => null,
-  ssr: true
-});
-
 export default function EventsPage() {
-  const heroRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('all');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const events = [
+  const exhibitions = [
     {
       id: 1,
+      type: 'exhibition',
       title: "Капитан Кусто в России",
-      date: "24 октября - 30 ноября",
-      description: "ВПЕРВЫЕ ПРЕДСТАВЛЕНЫ В РОССИИ экспонаты из семейной коллекции Франсин Кусто (Франция)",
+      date: "24 октября - 30 ноября 2025",
+      shortDate: "24.10 - 30.11",
+      description: "Впервые в России — экспонаты из семейной коллекции Франсин Кусто (Франция). Уникальная возможность увидеть предметы из легендарных экспедиций.",
       image: "/exhibitions/kusto-v-rossii.png",
-      teaser: `Что вас ждет:`,
-      key1: 'предметы из легендарных экспедиций команды Кусто',
-      key2: 'изобретения великого исследователя',
-      key3: 'редкие фотографии и картины, написанные под водой' 
+      highlights: [
+        "Предметы из легендарных экспедиций команды Кусто",
+        "Изобретения великого исследователя",
+        "Редкие фотографии и картины, написанные под водой"
+      ],
+      category: "Выставка",
+      link: '/events/kusto'
     },
     {
       id: 2,
+      type: 'exhibition',
       title: "AI SUMMIT Creative",
-      date: "30 октября – 6 ноября",
-      description: "Весь комплекс МВК “Art-Space” будет трансформирован в иммерсивное путешествие по миру ИИ, где каждый этаж посвящен своей теме: от социального и финансового применения ИИ до робототехники и генеративного искусства.",
+      date: "30 октября – 6 ноября 2025",
+      shortDate: "30.10 - 6.11",
+      description: "Весь комплекс МВК Art-Space трансформируется в иммерсивное путешествие по миру искусственного интеллекта. Каждый этаж — отдельная тема.",
       image: "/exhibitions/ai-summit.png",
-      teaser: `Что вас ждет:`,
-      key1: 'Примите участие в лекциях, мастер-классах и панельных дискуссиях с участием ведущих экспертов и лидеров мнений в сфере искусственного интеллекта, таких как Ольга Ускова (Cognitive Pilot) и Александр Байкин (PRO Robots).',
-      key2: 'Оцените интеграцию флагманских продуктов от ведущих технологических компаний страны, которые являются нашими стратегическими партнерами. Взаимодействуйте с их разработками в специально созданных брендированных зонах.',
-      key3: 'Вы сможете лично протестировать будущее. Погрузитесь в цифровые миры в комнате “AI Immersion Chamber”; испытайте смешанную реальность в VR/AR Лаборатории “Портал в Симулянтность”; наблюдайте за рождением физических объектов из цифрового кода в Лаборатории 3D-печати.' 
+      highlights: [
+        "Лекции и мастер-классы с ведущими экспертами",
+        "Интеграция флагманских продуктов от tech-компаний",
+        "VR/AR Лаборатория и 3D-печать в реальном времени"
+      ],
+      category: "Выставка",
+      link: '/events/ai-summit'
     },
     {
       id: 3,
-      title: "Три востока",
-      date: "20 ноября – 6 декабря",
-      description: "Экспозиция приглашает посетителей в увлекательное путешествие по культурным традициям трех великих восточных цивилизаций: Китая, Японии и Индии.",
+      type: 'exhibition',
+      title: "Три Востока",
+      date: "20 ноября – 6 декабря 2025",
+      shortDate: "20.11 - 6.12",
+      description: "Путешествие по культурным традициям трех великих цивилизаций: Китая, Японии и Индии. Философия, искусство и созерцание.",
       image: "/exhibitions/tri-vostoka.png",
-      teaser: `Что вас ждет:`,
-      key1: 'Влияние восточных философий на искусство и поиск гармонии.',
-      key2: 'Каллиграфия как медитативная практика и язык символов.',
-      key3: 'Минимализм, асимметрия, созерцательные пространства, вдохновленные дзен-садами.'
+      highlights: [
+        "Восточные философии и поиск гармонии",
+        "Каллиграфия как медитативная практика",
+        "Минимализм и созерцательные пространства"
+      ],
+      category: "Выставка",
+      link: '/events/tri-vostoka'
     }
   ];
+
+  const events = [
+    {
+      id: 4,
+      type: 'event',
+      title: "Кино и фотография как язык общения с миром",
+      date: "28 октября 2025, 19:00",
+      shortDate: "28.10, 19:00",
+      description: "Лекция в рамках выставки, посвященной Жаку-Иву Кусто. Бесплатный вход с регистрацией.",
+      image: "/assets/news/news-2.webp",
+      category: "Лекция",
+      link: '/events/lecture-kino-foto'
+    },
+    {
+      id: 5,
+      type: 'event',
+      title: "In Pulse ИИ Автоматизации",
+      date: "6 ноября 2025, 18:00",
+      shortDate: "6.11, 18:00",
+      description: "Конференция для тех, кто внедряет ИИ, экономит бюджеты и развивает бизнес. Практические кейсы и нетворкинг.",
+      image: "/assets/news/news-3.webp",
+      category: "Конференция",
+      link: '/events/in-pulse-ai'
+    },
+  ];
+
+  const allItems = [...exhibitions, ...events].sort((a, b) => 
+    new Date(a.date) - new Date(b.date)
+  );
+
+  const getFilteredItems = () => {
+    switch(activeTab) {
+      case 'exhibitions':
+        return exhibitions;
+      case 'events':
+        return events;
+      default:
+        return allItems;
+    }
+  };
+
+  const filteredItems = getFilteredItems();
+
+  // ✅ Обработчик смены фильтра с плавным переходом
+  const handleTabChange = (tab) => {
+    setIsTransitioning(true);
+    setActiveTab(tab);
+    
+    // Небольшая задержка для плавного fade
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
+  };
+
+  // ✅ Пересчёт Footer при смене фильтра
+  useEffect(() => {
+    // Небольшая задержка чтобы DOM обновился
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   return (
     <main className="events-page">
       {/* Hero Section */}
-      <section ref={heroRef} className="events-hero">
+      <section className="events-hero">
+        <div className="events-hero-bg"></div>
         <div className="events-hero-content">
-          <span className="events-hero-label">Предстоящие события</span>
+          <span className="events-hero-badge">Афиша</span>
           <h1 className="events-hero-title">
-            Выставки <br /> в ART-Space
+            События ART-Space
           </h1>
-          <p className="events-hero-description">
-            Откройте для себя будущие события нашего пространства. Эксклюзивные показы, лекции и встречи с художниками.
+          <p className="events-hero-subtitle">
+            Выставки, лекции и мастер-классы в культурно-технологическом пространстве
           </p>
         </div>
       </section>
 
-      {/* Events List */}
-      <section className="events-list">
-        {events.map((event) => (
-          <article key={event.id} className="event-item">
-            {/* Блюр фон только на десктопе */}
-            <div className="event-blur-bg" style={{ backgroundImage: `url(${event.image})` }} />
+      {/* Filter Tabs */}
+      <div className="events-filter">
+        <div className="events-filter-container">
+          <button 
+            className={`filter-btn ${activeTab === 'all' ? 'filter-btn--active' : ''}`}
+            onClick={() => handleTabChange('all')}
+          >
+            Все события
+            <span className="filter-count">{allItems.length}</span>
+          </button>
+          <button 
+            className={`filter-btn ${activeTab === 'exhibitions' ? 'filter-btn--active' : ''}`}
+            onClick={() => handleTabChange('exhibitions')}
+          >
+            Выставки
+            <span className="filter-count">{exhibitions.length}</span>
+          </button>
+          <button 
+            className={`filter-btn ${activeTab === 'events' ? 'filter-btn--active' : ''}`}
+            onClick={() => handleTabChange('events')}
+          >
+            Мероприятия
+            <span className="filter-count">{events.length}</span>
+          </button>
+        </div>
+      </div>
 
-            <div className="event-image-wrapper">
-              <img 
-                src={event.image} 
-                alt={event.title} 
-                loading="lazy"
-                className="event-image"
-              />
-            </div>
-
-            <div className="event-content">
-              <h2 className="event-title">{event.title}</h2>
-              <p className="event-date">📅 {event.date}</p>
-              <p className="event-description">{event.description}</p>
-
-              <div className="event-teaser">
-                <strong> {event.teaser}</strong>
-                <ul>
-                  <li>{event.key1}</li>
-                  <li>{event.key2}</li>
-                  <li>{event.key3}</li>
-                </ul>
+      {/* Events Grid - с плавным переходом */}
+      <section 
+        className={`events-grid ${isTransitioning ? 'events-grid--transitioning' : ''}`}
+        style={{ minHeight: '600px' }} // ✅ Минимальная высота
+      >
+        {filteredItems.map((item) => (
+          <article key={item.id} className={`event-card event-card--${item.type}`}>
+            <a href={item.link} className="event-card-link">
+              <div className="event-card-image">
+                <img src={item.image} alt={item.title} loading="lazy" />
+                <div className="event-card-overlay"></div>
+                <span className="event-card-category">{item.category}</span>
               </div>
 
-              <a href="https://tickets.art-space.world/#events" className="event-cta-btn">
-                Забронировать место
-                <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-            </div>
+              <div className="event-card-body">
+                <div className="event-card-header">
+                  <h3 className="event-card-title">{item.title}</h3>
+                  <time className="event-card-date">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                    {item.shortDate}
+                  </time>
+                </div>
+
+                <p className="event-card-description">{item.description}</p>
+
+                {item.highlights && (
+                  <ul className="event-card-highlights">
+                    {item.highlights.slice(0, 2).map((highlight, idx) => (
+                      <li key={idx}>
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="event-card-footer">
+                  <span className="event-card-cta">
+                    {item.type === 'exhibition' ? 'Подробнее о выставке' : 'Узнать больше'}
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </a>
           </article>
         ))}
       </section>
 
-      {/* VIP Opening Section */}
-      <section className="vip-opening-section">
-        <div className="vip-container">
-          <span className="vip-badge">✨ Эксклюзив</span>
-          <h2 className="vip-title">Закрытый VIP Открытие</h2>
-          <p className="vip-description">
-            Мы рады пригласить вас на эксклюзивное VIP открытие наших выставок — уникальное событие с возможностью лично встретиться с художниками, насладиться коктейлями и погрузиться в атмосферу искусства.
-          </p>
-          <a href="#" className="vip-cta-btn">
-            Узнать подробнее
-            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
-        </div>
-      </section>
-
-      <Footer />
+      {/* ✅ Footer с key для пересоздания */}
+      <Footer key={activeTab} />
     </main>
   );
 }

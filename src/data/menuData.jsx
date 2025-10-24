@@ -2,7 +2,7 @@ export const menuData = {
   menuItems: [
     { id: "Главная", label: "Главная", href: "/" },
     { id: "Пространство", label: "Пространство", href: "/gallery" },
-    { id: "События", label: "События", href: "/events" },
+    { id: "Афиша", label: "Афиша", href: "/events" },
     { id: "Контакты", label: "Контакты", href: "/contact" }
   ],
 

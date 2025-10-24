@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import './contact.css';
 import Footer from "@/components/Footer/Footer";
 
@@ -25,12 +24,28 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus('sending');
     
-    // TODO: Здесь добавить отправку на бэкенд
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-      setTimeout(() => setStatus(''), 3000);
-    }, 1000);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        setTimeout(() => setStatus(''), 5000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus(''), 5000);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setStatus('error');
+      setTimeout(() => setStatus(''), 5000);
+    }
   };
 
   return (
@@ -38,7 +53,6 @@ export default function ContactPage() {
       {/* Фоновое видео/изображение */}
       <div className="contact-background">
         <div className="contact-background-overlay"></div>
-        {/* Можно заменить на видео */}
         <div className="contact-background-image"></div>
       </div>
 
@@ -65,7 +79,7 @@ export default function ContactPage() {
                 </div>
                 <div className="contact-detail-text">
                   <h3>Адрес</h3>
-                  <p>Москва, Красная площадь, 1</p>
+                  <p>Москва, Тверская 9</p>
                 </div>
               </div>
 
@@ -77,7 +91,7 @@ export default function ContactPage() {
                 </div>
                 <div className="contact-detail-text">
                   <h3>Email</h3>
-                  <a href="mailto:info@art-space.ru">info@art-space.ru</a>
+                  <a href="mailto:info@art-space.world">info@art-space.world</a>
                 </div>
               </div>
 
@@ -94,23 +108,23 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Социальные сети */}
+            {/* Социальные сети - ОБНОВЛЕНО */}
             <div className="contact-social">
-              <a href="#" className="contact-social-link" aria-label="Instagram">
+              <a href="https://vk.com/artspace" className="contact-social-link" aria-label="VK" target="_blank" rel="noopener noreferrer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.17 14.63h-1.15c-.68 0-.89-.54-2.11-1.76-.75-.71-1.08-.81-1.27-.81-.26 0-.33.07-.33.42v1.61c0 .43-.14.69-1.27.69-1.87 0-3.94-1.13-5.4-3.24-2.19-3-2.79-5.26-2.79-5.71 0-.19.07-.37.42-.37h1.15c.31 0 .43.14.55.47.65 1.83 1.74 3.44 2.19 3.44.17 0 .24-.08.24-.5v-1.97c-.06-.98-.58-1.06-.58-1.41 0-.15.13-.3.33-.3h1.8c.26 0 .35.14.35.44v2.67c0 .26.11.35.19.35.17 0 .3-.09.6-.39 1.03-1.16 1.77-2.96 1.77-2.96.09-.21.24-.37.55-.37h1.15c.37 0 .45.19.37.44-.17.75-1.83 3.11-1.83 3.11-.14.23-.17.33 0 .59.13.18.54.53.82.85.75.86 1.31 1.57 1.46 2.07.14.49-.08.74-.55.74z"/>
+                </svg>
+              </a>
+              <a href="https://t.me/artspace" className="contact-social-link" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.52-.47-.01-1.38-.27-2.05-.49-.82-.27-1.47-.42-1.42-.88.03-.24.37-.48 1.02-.73 4-1.74 6.68-2.88 8.03-3.43 3.82-1.59 4.62-1.87 5.14-1.87.11 0 .37.03.54.17.14.12.18.28.2.39-.01.06.01.24 0 .38z"/>
+                </svg>
+              </a>
+              <a href="https://instagram.com/artspace" className="contact-social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M16 11.37C16.1234 12.2022 15.9813 13.0522 15.5938 13.799C15.2063 14.5458 14.5931 15.1514 13.8416 15.5297C13.0901 15.9079 12.2384 16.0396 11.4077 15.9059C10.5771 15.7723 9.80976 15.3801 9.21484 14.7852C8.61992 14.1902 8.22773 13.4229 8.09407 12.5923C7.9604 11.7616 8.09207 10.9099 8.47033 10.1584C8.84859 9.40685 9.45419 8.79374 10.201 8.40624C10.9478 8.01874 11.7978 7.87658 12.63 8C13.4789 8.12588 14.2649 8.52146 14.8717 9.1283C15.4785 9.73515 15.8741 10.5211 16 11.37Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M17.5 6.5H17.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-              <a href="#" className="contact-social-link" aria-label="Facebook">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-              <a href="#" className="contact-social-link" aria-label="Twitter">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M23 3.00005C22.0424 3.67552 20.9821 4.19216 19.86 4.53005C19.2577 3.83756 18.4573 3.34674 17.567 3.12397C16.6767 2.90121 15.7395 2.95724 14.8821 3.28451C14.0247 3.61177 13.2884 4.19445 12.773 4.95376C12.2575 5.71308 11.9877 6.61238 12 7.53005V8.53005C10.2426 8.57561 8.50127 8.18586 6.93101 7.39549C5.36074 6.60513 4.01032 5.43868 3 4.00005C3 4.00005 -1 13 8 17C5.94053 18.398 3.48716 19.099 1 19C10 24 21 19 21 7.50005C20.9991 7.2215 20.9723 6.94364 20.92 6.67005C21.9406 5.66354 22.6608 4.39276 23 3.00005Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </a>
             </div>
@@ -190,7 +204,13 @@ export default function ContactPage() {
 
               {status === 'success' && (
                 <div className="form-message form-message--success">
-                  Сообщение успешно отправлено!
+                  ✓ Сообщение успешно отправлено!
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="form-message form-message--error">
+                  ✗ Ошибка отправки. Попробуйте позже.
                 </div>
               )}
             </form>

@@ -20,8 +20,8 @@ export default function MobileMenu({ menuData }) {
 
   const menuLinks = [
     { label: 'Главная', href: '/' },
+    { label: 'Афиша', href: '/events' },
     { label: 'Пространство', href: '/gallery' },
-    { label: 'События', href: '/events' },
     { label: 'Контакты', href: '/contact' }
   ];
 
