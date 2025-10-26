@@ -55,7 +55,6 @@ export default function HeroSection({ mode, frameCount = 1500 }) {
       loadImage(i);
     }
     
-    // Очистка дальних кадров
     for (const key of cache.current.keys()) {
       if (key < start - 50 || key > end + 100) {
         cache.current.delete(key);
@@ -63,59 +62,53 @@ export default function HeroSection({ mode, frameCount = 1500 }) {
     }
   }, [frameCount, loadImage]);
 
-  // Отрисовка кадра
   // Отрисовка кадра с правильным масштабированием
-const drawFrame = useCallback((index) => {
-  const canvas = canvasRef.current;
-  const ctx = ctxRef.current;
-  if (!canvas || !ctx) return;
+  const drawFrame = useCallback((index) => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
 
-  const idx = Math.max(1, Math.min(frameCount, Math.round(index)));
-  
-  if (lastFrameRef.current === idx) return;
+    const idx = Math.max(1, Math.min(frameCount, Math.round(index)));
+    
+    if (lastFrameRef.current === idx) return;
 
-  const img = cache.current.get(idx);
-  if (!img || !img.complete) {
-    maintainWindow(idx);
-    return;
-  }
-
-  try {
-    // Очищаем canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Получаем реальные размеры viewport (без DPR)
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    
-    // Вычисляем размеры для cover/contain
-    const imgRatio = img.naturalWidth / img.naturalHeight;
-    const canvasRatio = viewportWidth / viewportHeight;
-    
-    let drawWidth, drawHeight, offsetX, offsetY;
-    
-    // Cover (заполняет весь экран, обрезая лишнее)
-    if (imgRatio > canvasRatio) {
-      drawHeight = viewportHeight;
-      drawWidth = drawHeight * imgRatio;
-      offsetX = (viewportWidth - drawWidth) / 2;
-      offsetY = 0;
-    } else {
-      drawWidth = viewportWidth;
-      drawHeight = drawWidth / imgRatio;
-      offsetX = 0;
-      offsetY = (viewportHeight - drawHeight) / 2;
+    const img = cache.current.get(idx);
+    if (!img || !img.complete) {
+      maintainWindow(idx);
+      return;
     }
-    
-    // Рисуем изображение
-    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-    
-    lastFrameRef.current = idx;
-    maintainWindow(idx);
-  } catch (error) {
-    console.error('Error drawing frame:', error);
-  }
-}, [frameCount, maintainWindow]);
+
+    try {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      const imgRatio = img.naturalWidth / img.naturalHeight;
+      const canvasRatio = viewportWidth / viewportHeight;
+      
+      let drawWidth, drawHeight, offsetX, offsetY;
+      
+      if (imgRatio > canvasRatio) {
+        drawHeight = viewportHeight;
+        drawWidth = drawHeight * imgRatio;
+        offsetX = (viewportWidth - drawWidth) / 2;
+        offsetY = 0;
+      } else {
+        drawWidth = viewportWidth;
+        drawHeight = drawWidth / imgRatio;
+        offsetX = 0;
+        offsetY = (viewportHeight - drawHeight) / 2;
+      }
+      
+      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+      
+      lastFrameRef.current = idx;
+      maintainWindow(idx);
+    } catch (error) {
+      console.error('Error drawing frame:', error);
+    }
+  }, [frameCount, maintainWindow]);
 
   // Установка размера canvas
   const setCanvasSize = useCallback(() => {
@@ -145,10 +138,8 @@ const drawFrame = useCallback((index) => {
     if (!isSequence) return;
     if (typeof window !== "undefined" && window.innerWidth < 768) return;
 
-    // Загружаем первый кадр
     loadImage(1);
     
-    // Предзагружаем первые 20 кадров
     for (let i = 2; i <= Math.min(20, frameCount); i++) {
       setTimeout(() => loadImage(i), i * 10);
     }
@@ -177,7 +168,6 @@ const drawFrame = useCallback((index) => {
 
       if (!firstText || !secondText || !thirdText || !fourthText) return;
 
-      // Начальные состояния текста
       gsap.set([secondText, thirdText, fourthText], {
         opacity: 0,
         yPercent: 10,
@@ -185,7 +175,6 @@ const drawFrame = useCallback((index) => {
       });
       gsap.set(firstText, { opacity: 1, yPercent: 0, filter: "blur(0px)" });
 
-      // Настройка canvas
       setCanvasSize();
       
       const handleResize = () => {
@@ -204,7 +193,6 @@ const drawFrame = useCallback((index) => {
         fastScrollEnd: true,
       };
 
-      // Текстовая анимация
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -255,7 +243,6 @@ const drawFrame = useCallback((index) => {
         )
         .to({}, { duration: 450 }, 2100);
 
-      // Canvas sequence анимация
       if (isSequence && canvasRef.current) {
         const state = { frame: 1 };
         
@@ -288,13 +275,31 @@ const drawFrame = useCallback((index) => {
 
   return (
     <>
-      {/* Мобильная версия */}
+      {/* Мобильная версия - С ФОНОМ */}
       <section className="hero hero--mobile" role="banner" aria-label="Hero">
         <div className="hero__bg-mobile"></div>
         <div className="hero__content-mobile">
           <h1 className="hero__title-mobile">ART‑Space</h1>
-          <p className="hero__subtitle-mobile">Exhibition</p>
-          <p className="hero__location-mobile">Tverskaya 9, Moscow</p>
+          <p className="hero__subtitle-mobile">
+            Международный выставочный комплекс
+          </p>
+          <p className="hero__location-mobile">Тверская 9, Москва</p>
+          
+          {/* Кнопки */}
+          <div className="hero__buttons-mobile">
+            <a href="https://tickets.art-space.world/#events" className="hero__btn hero__btn--primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Билеты
+            </a>
+            <a href="/events" className="hero__btn hero__btn--secondary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              Афиша
+            </a>
+          </div>
         </div>
       </section>
 

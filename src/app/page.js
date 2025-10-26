@@ -43,6 +43,17 @@ const exhibitionsData = [
   },
   {
     id: 3,
+    title: "In Pulse ИИ Автоматизации",
+    dates: "6.11",
+    year: "2025",
+    description: "Конференция для тех, кто внедряет ИИ, экономит бюджеты и развивает бизнес. Практические кейсы и нетворкинг.",
+    image: "/assets/news/news-3.webp",
+    category: "Конференция",
+    location: "Все залы",
+    link: "#"
+  },
+  {
+    id: 4,
     title: "Три Востока",
     dates: "20.11 - 6.12",
     year: "2025",

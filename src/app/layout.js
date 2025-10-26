@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
 
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* <Loading images={criticalImages} minLoadTime={2000}/> */}
+        <Loading />
         <Navbar />
         <ScrollSmootherWrapper>
           {children}

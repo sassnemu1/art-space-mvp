@@ -117,7 +117,7 @@
   color: #fff;
 }
 
-/* Активная кнопка - просто белый текст */
+/* Активная кнопка */
 .filter-btn--active {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
@@ -146,8 +146,12 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Мобильная версия */
+/* Мобильная версия - БЕЗ ПЕРЕХОДОВ */
 @media (max-width: 768px) {
+  .events-filter {
+    position: static; /* ✅ Убираем sticky на мобильных */
+  }
+
   .events-filter-container {
     flex-direction: column;
     gap: 8px;
@@ -157,6 +161,24 @@
   .filter-btn {
     min-width: 100%;
     padding: 14px 20px;
+    transition: none; /* ✅ Убираем плавный переход */
+  }
+
+  .filter-btn:hover {
+    background: transparent; /* ✅ Убираем hover на мобильных */
+    color: #888;
+  }
+
+  .filter-btn--active:hover {
+    color: #fff; /* ✅ Активная кнопка остаётся белой */
+  }
+
+  .filter-count {
+    transition: none; /* ✅ Убираем переход счётчика */
+  }
+
+  .filter-btn:hover .filter-count {
+    background: rgba(255, 255, 255, 0.1); /* ✅ Не меняем фон при hover */
   }
 }
 
@@ -176,11 +198,17 @@
   opacity: 0.7;
 }
 
+/* ✅ Убираем плавный переход grid на мобильных */
 @media (max-width: 768px) {
   .events-grid {
     grid-template-columns: 1fr;
     gap: 16px;
     padding-bottom: 60px;
+    transition: none; /* ✅ Убираем transition */
+  }
+
+  .events-grid--transitioning {
+    opacity: 1; /* ✅ Не меняем прозрачность */
   }
 }
 
@@ -361,10 +389,30 @@
   
   .event-card {
     border-radius: 16px;
+    transition: none; /* ✅ Убираем переход карточек */
+  }
+
+  .event-card:hover {
+    transform: none; /* ✅ Убираем подъём */
+    background: var(--card-bg); /* ✅ Без изменения фона */
+    border-color: var(--border-color); /* ✅ Без изменения границы */
+    box-shadow: none; /* ✅ Убираем тень */
   }
   
   .event-card:active {
     transform: scale(0.98);
+  }
+
+  .event-card-image img {
+    transition: none; /* ✅ Убираем zoom изображений */
+  }
+
+  .event-card:hover .event-card-image img {
+    transform: none; /* ✅ Убираем scale */
+  }
+
+  .event-card:hover .event-card-overlay {
+    opacity: 0; /* ✅ Убираем оверлей */
   }
   
   .event-card-body {
@@ -373,5 +421,18 @@
   
   .event-card-title {
     font-size: 18px;
+  }
+
+  .event-card-cta {
+    transition: none; /* ✅ Убираем анимацию CTA */
+  }
+
+  .event-card:hover .event-card-cta {
+    gap: 8px; /* ✅ Без изменения gap */
+    color: #667eea; /* ✅ Без изменения цвета */
+  }
+
+  .event-card:hover .event-card-cta svg {
+    transform: none; /* ✅ Без сдвига стрелки */
   }
 }

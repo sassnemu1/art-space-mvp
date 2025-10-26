@@ -1,137 +1,65 @@
-// components/Preloader.jsx
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import gsap from "gsap";
+import { useEffect, useState } from "react";
 import "./Loading.css";
 
-export default function Loading({ images = [], minLoadTime = 2000 }) {
-  const [progress, setProgress] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-  const preloaderRef = useRef(null);
-  const logoRef = useRef(null);
-  const loaderRef = useRef(null);
+export default function Loading() {
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-    const startTime = Date.now();
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000);
 
-    // Деликатная входная анимация
-    gsap.fromTo(logoRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 0.3 }
-    );
-
-    gsap.fromTo(loaderRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.8, ease: "power2.out", delay: 0.8 }
-    );
-
-    const preloadAssets = async () => {
-      const totalAssets = images.length || 1;
-      let loadedAssets = 0;
-
-      const updateProgress = () => {
-        loadedAssets++;
-        const currentProgress = Math.round((loadedAssets / totalAssets) * 100);
-        
-        if (isMounted) {
-          gsap.to({ value: progress }, {
-            value: currentProgress,
-            duration: 0.4,
-            ease: "power1.out",
-            onUpdate: function() {
-              setProgress(Math.round(this.targets()[0].value));
-            }
-          });
-        }
-      };
-
-      if (images.length > 0) {
-        const imagePromises = images.map((src) => {
-          return new Promise((resolve) => {
-            const img = new Image();
-            img.onload = () => {
-              updateProgress();
-              resolve();
-            };
-            img.onerror = () => {
-              updateProgress();
-              resolve();
-            };
-            img.src = src;
-          });
-        });
-
-        await Promise.all(imagePromises);
-      } else {
-        // Имитация загрузки
-        for (let i = 0; i <= 100; i += 20) {
-          await new Promise(resolve => setTimeout(resolve, 150));
-          if (isMounted) {
-            setProgress(i);
-          }
-        }
-      }
-
-      const elapsedTime = Date.now() - startTime;
-      const remainingTime = Math.max(0, minLoadTime - elapsedTime);
-
-      setTimeout(() => {
-        if (isMounted) {
-          setProgress(100);
-          
-          // Элегантный выход
-          const tl = gsap.timeline({
-            onComplete: () => setIsComplete(true)
-          });
-
-          tl.to(loaderRef.current, {
-            opacity: 0,
-            duration: 0.4,
-            ease: "power2.in"
-          })
-          .to(logoRef.current, {
-            opacity: 0,
-            y: -20,
-            duration: 0.5,
-            ease: "power2.in"
-          }, "-=0.2")
-          .to(preloaderRef.current, {
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.inOut"
-          }, "-=0.3");
-        }
-      }, remainingTime);
-    };
-
-    preloadAssets();
+    if (isLoading) {
+      document.body.style.overflow = "hidden";
+    }
 
     return () => {
-      isMounted = false;
+      clearTimeout(timer);
+      document.body.style.overflow = "unset";
     };
-  }, [images, minLoadTime, progress]);
+  }, [isLoading]);
 
-  if (isComplete) return null;
+  if (!isLoading) return null;
 
   return (
-    <div ref={preloaderRef} className="preloader-minimal">
-      <div className="preloader-minimal-content">
-        {/* Логотип ART */}
-        <div ref={logoRef} className="minimal-logo">
-          <span className="minimal-logo-text">ART</span>
+    <div className="loader">
+      <div className="loader__content">
+        {/* Геометрические фигуры */}
+        <div className="loader__shapes">
+          {/* Квадрат - черный */}
+          <svg className="loader__shape loader__shape--square" viewBox="0 0 100 100">
+            <rect x="15" y="15" width="70" height="70" />
+          </svg>
+
+          {/* Круг - бордовый */}
+          <svg className="loader__shape loader__shape--circle" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="35" />
+          </svg>
+
+          {/* Треугольник - бежевый */}
+          <svg className="loader__shape loader__shape--triangle" viewBox="0 0 100 100">
+            <polygon points="50,15 90,85 10,85" />
+          </svg>
         </div>
 
-        {/* Loader */}
-        <div ref={loaderRef} className="minimal-loader">
-          {/* Тонкий прогресс-бар */}
-          <div className="minimal-progress">
-            <div 
-              className="minimal-progress-fill"
-              style={{ transform: `scaleX(${progress / 100})` }}
-            />
-          </div>
+        {/* Текст ART-Space */}
+        <div className="loader__text">
+          <span className="loader__letter">A</span>
+          <span className="loader__letter">R</span>
+          <span className="loader__letter">T</span>
+          <span className="loader__separator">-</span>
+          <span className="loader__letter">S</span>
+          <span className="loader__letter">p</span>
+          <span className="loader__letter">a</span>
+          <span className="loader__letter">c</span>
+          <span className="loader__letter">e</span>
+        </div>
+
+        {/* Прогресс бар */}
+        <div className="loader__progress">
+          <div className="loader__progress-bar"></div>
         </div>
       </div>
     </div>
