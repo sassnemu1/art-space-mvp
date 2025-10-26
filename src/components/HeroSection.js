@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -275,7 +276,7 @@ export default function HeroSection({ mode, frameCount = 1500 }) {
 
   return (
     <>
-      {/* Мобильная версия - С ФОНОМ */}
+      {/* Мобильная версия */}
       <section className="hero hero--mobile" role="banner" aria-label="Hero">
         <div className="hero__bg-mobile"></div>
         <div className="hero__content-mobile">
@@ -285,20 +286,25 @@ export default function HeroSection({ mode, frameCount = 1500 }) {
           </p>
           <p className="hero__location-mobile">Тверская 9, Москва</p>
           
-          {/* Кнопки */}
+          {/* Обе кнопки с Next.js Link */}
           <div className="hero__buttons-mobile">
-            <a href="https://tickets.art-space.world/#events" className="hero__btn hero__btn--primary">
+            <Link 
+              href="https://tickets.art-space.world/#events" 
+              className="hero__btn hero__btn--primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               Билеты
-            </a>
-            <a href="/events" className="hero__btn hero__btn--secondary">
+            </Link>
+            <Link href="/events" className="hero__btn hero__btn--secondary">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
               Афиша
-            </a>
+            </Link>
           </div>
         </div>
       </section>
