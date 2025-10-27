@@ -72,34 +72,14 @@ export default async function HomePage() {
   // const homeData = await getPageData();
   const data = {
     mode: 'sequence',
-    frameCount: 1400
+    frameCount: 280
   }
-  
 
-  // Fallback данные (если WordPress недоступен)
-  const fallbackData = {
-    heroFields: {
-      heroMode: 'sequence',
-      heroFrameCount: 1500
-    },
-    contentFields: {
-      contentFrameCount: 1000,
-      switchFrame: 150,
-      firstTitle: 'Искусство будущего',
-      secondTitle: 'Цифровая революция',
-      firstSubtitle: 'Погружение в мир цифрового творчества',
-      secondSubtitle: 'Трансформация визуального языка',
-      firstDescription: 'Откройте для себя новые горизонты современного искусства, где технологии становятся кистью художника.',
-      secondDescription: 'Исследуйте эволюцию художественного выражения через призму современных технологий.'
-    }
-  };
 
   // const data = homeData || fallbackData;
   // const data = homeData 
   return (
     <>
-
-     
       {/* <HeroSection 
         mode={data.heroFields?.heroMode}
         frameCount={data.heroFields?.heroFrameCount}

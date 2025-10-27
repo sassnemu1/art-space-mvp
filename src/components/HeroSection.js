@@ -8,7 +8,7 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroSection({ frameCount = 1500 }) {
+export default function HeroSection({ frameCount = 300 }) {
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
@@ -130,7 +130,7 @@ export default function HeroSection({ frameCount = 1500 }) {
     if (!section) return;
 
     // Длина скролла для секции
-    const scrollLength = "+=1500vh";
+    const scrollLength = "+=800vh";
 
     // Pin секции
     ScrollTrigger.create({
