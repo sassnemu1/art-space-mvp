@@ -5,6 +5,8 @@ import VeraAwardSection from '@/components/HomePage/VeraAwardSection/VeraAwardSe
 import Footer from '@/components/Footer/Footer';
 import NewsSection from '@/components/HomePage/NewsSection/NewsSection';
 
+// import LoaderGate from "@/components/Loading/LoaderGate/LoaderGate";
+
 // import { getHomePageData, testWordPressConnection } from '../lib/wordpress';
 
 // Загрузка данных из WordPress
@@ -28,7 +30,7 @@ const exhibitionsData = [
     image: "/exhibitions/kusto-v-rossii.png",
     category: "Историческое событие",
     location: "4 Этаж",
-    link: "#"
+    link: "/events/kusto/"
   },
   {
     id: 2,
@@ -39,7 +41,7 @@ const exhibitionsData = [
     image: "/exhibitions/ai-summit.png",
     category: "AI Конфиренция",
     location: "Все залы",
-    link: "#"
+    link: "/events/ai-summit"
   },
   {
     id: 3,
@@ -50,7 +52,7 @@ const exhibitionsData = [
     image: "/assets/news/news-3.webp",
     category: "Конференция",
     location: "Все залы",
-    link: "#"
+    link: "/events/in-pulse-ai/"
   },
   {
     id: 4,
@@ -61,11 +63,12 @@ const exhibitionsData = [
     image: "/exhibitions/tri-vostoka.png",
     category: "Культурное наследие",
     location: "3 этаж",
-    link: "#"
+    link: "/events/tri-vostoka/"
   }
 ];
 
 export default async function HomePage() {
+
   // const homeData = await getPageData();
   const data = {
     mode: 'sequence',
@@ -91,13 +94,12 @@ export default async function HomePage() {
     }
   };
 
-  console.log(data.mode);
-  
-
   // const data = homeData || fallbackData;
   // const data = homeData 
   return (
     <>
+
+     
       {/* <HeroSection 
         mode={data.heroFields?.heroMode}
         frameCount={data.heroFields?.heroFrameCount}
@@ -128,7 +130,7 @@ export default async function HomePage() {
 }
 
 // Настройки статической генерации
-// export const revalidate = 60; // ISR каждую минуту
+export const revalidate = 60; // ISR каждую минуту
 
 // SEO метаданные из WordPress
 // export async function generateMetadata() {

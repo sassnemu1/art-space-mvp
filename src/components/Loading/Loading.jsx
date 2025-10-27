@@ -3,25 +3,11 @@
 import { useEffect, useState } from "react";
 import "./Loading.css";
 
-export default function Loading() {
-  const [isLoading, setIsLoading] = useState(true);
-
+export default function Loading({ onFinish }) {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 10000);
-
-    if (isLoading) {
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      clearTimeout(timer);
-      document.body.style.overflow = "unset";
-    };
-  }, [isLoading]);
-
-  if (!isLoading) return null;
+    const t = setTimeout(() => onFinish?.(), 5000); // уменьшено с 10 до 5 сек
+    return () => clearTimeout(t);
+  }, [onFinish]);
 
   return (
     <div className="loader">
@@ -55,11 +41,6 @@ export default function Loading() {
           <span className="loader__letter">a</span>
           <span className="loader__letter">c</span>
           <span className="loader__letter">e</span>
-        </div>
-
-        {/* Прогресс бар */}
-        <div className="loader__progress">
-          <div className="loader__progress-bar"></div>
         </div>
       </div>
     </div>

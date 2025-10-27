@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+
 import Footer from '@/components/Footer/Footer';
+
 import './events.css';
+
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState('all');
@@ -172,7 +176,7 @@ export default function EventsPage() {
       >
         {filteredItems.map((item) => (
           <article key={item.id} className={`event-card event-card--${item.type}`}>
-            <a href={item.link} className="event-card-link">
+            <Link href={item.link} className="event-card-link">
               <div className="event-card-image">
                 <img src={item.image} alt={item.title} loading="lazy" />
                 <div className="event-card-overlay"></div>
@@ -214,7 +218,7 @@ export default function EventsPage() {
                   </span>
                 </div>
               </div>
-            </a>
+            </Link>
           </article>
         ))}
       </section>

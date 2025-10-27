@@ -3,9 +3,8 @@ import ScrollSmootherWrapper from '../components/ScrollSmootherWrapper';
 
 import "./globals.css";
 
+import LoaderGate from "@/components/Loading/LoaderGate/LoaderGate";
 import Navbar from '@/components/Navbar/Navbar'
-import Loading from "@/components/Loading/Loading";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,9 +40,10 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;800&display=swap" rel="stylesheet" />
         {/* <link rel="preload" as="image" href="/seq/output_0001.webp" imageSrcSet="/seq/output_0001.webp" /> */}
 
+
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Loading />
+        <LoaderGate />
         <Navbar />
         <ScrollSmootherWrapper>
           {children}

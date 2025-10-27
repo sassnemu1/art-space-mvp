@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -308,7 +309,7 @@ export default function TimelineSection({
                     )}
                   </div>
                   {exhibition.link && (
-                    <a 
+                    <Link 
                       href={exhibition.link} 
                       className="timeline-card-button animate-in"
                       target="_blank"
@@ -319,7 +320,7 @@ export default function TimelineSection({
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                    </a>
+                    </Link>
                   )}
                 </div>
               </div>

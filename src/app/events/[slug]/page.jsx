@@ -3,7 +3,10 @@
 import { use } from 'react';
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+
 import './event-detail.css';
+
 
 const Footer = dynamic(() => import('@/components/Footer/Footer'), {
   loading: () => null,
@@ -240,12 +243,12 @@ export default function EventDetailPage({ params }) {
         <div className="event-detail-hero-bg" style={{ backgroundImage: `url(${event.image})` }}></div>
         <div className="event-detail-hero-overlay"></div>
         <div className="event-detail-hero-content">
-          <a href="/events" className="event-detail-back">
+          <Link href="/events" className="event-detail-back">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
               <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             Назад к событиям
-          </a>
+          </Link>
           <span className="event-detail-badge">{event.type === 'exhibition' ? 'Выставка' : 'Мероприятие'}</span>
           <h1 className="event-detail-title">{event.title}</h1>
           <p className="event-detail-subtitle">{event.subtitle}</p>

@@ -1,325 +1,195 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import fitContain from "@/lib/fitContain";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroSection({ mode, frameCount = 1500 }) {
-  const desktopRoot = useRef(null);
+export default function HeroSection({ frameCount = 1500 }) {
+  const sectionRef = useRef(null);
   const canvasRef = useRef(null);
-  const ctxRef = useRef(null);
-  const lastFrameRef = useRef(-1);
-  const cache = useRef(new Map());
-  const inflight = useRef(new Set());
-
-  const isSequence = mode === "sequence";
+  const contextRef = useRef(null);
+  
+  const imageCache = useRef([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
 
   const currentFrame = useCallback(
-    (i) => `/seq/output_${String(i).padStart(4, "0")}.webp`,
+    (index) => `/seq/output_${String(index).padStart(4, "0")}.webp`,
     []
   );
 
-  // Загрузка одного изображения
-  const loadImage = useCallback((idx) => {
-    if (idx < 1 || idx > frameCount) return;
-    if (cache.current.has(idx) || inflight.current.has(idx)) return;
-
-    inflight.current.add(idx);
-    const img = new Image();
-    
-    img.onload = () => {
-      inflight.current.delete(idx);
-      cache.current.set(idx, img);
-    };
-    
-    img.onerror = () => {
-      inflight.current.delete(idx);
-    };
-    
-    img.src = currentFrame(idx);
-  }, [frameCount, currentFrame]);
-
-  // Поддержка окна загрузки
-  const maintainWindow = useCallback((center) => {
-    const windowBefore = 30;
-    const windowAfter = 60;
-    
-    const start = Math.max(1, center - windowBefore);
-    const end = Math.min(frameCount, center + windowAfter);
-    
-    for (let i = start; i <= end; i++) {
-      loadImage(i);
-    }
-    
-    for (const key of cache.current.keys()) {
-      if (key < start - 50 || key > end + 100) {
-        cache.current.delete(key);
-      }
-    }
-  }, [frameCount, loadImage]);
-
-  // Отрисовка кадра с правильным масштабированием
-  const drawFrame = useCallback((index) => {
+  const updateImage = useCallback((index) => {
     const canvas = canvasRef.current;
-    const ctx = ctxRef.current;
-    if (!canvas || !ctx) return;
+    const context = contextRef.current;
+    if (!canvas || !context) return;
 
-    const idx = Math.max(1, Math.min(frameCount, Math.round(index)));
+    const img = imageCache.current[index];
+    if (!img) return;
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
     
-    if (lastFrameRef.current === idx) return;
+    const canvasRatio = viewportWidth / viewportHeight;
+    const imageRatio = img.width / img.height;
 
-    const img = cache.current.get(idx);
-    if (!img || !img.complete) {
-      maintainWindow(idx);
-      return;
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (imageRatio > canvasRatio) {
+      drawHeight = viewportHeight;
+      drawWidth = drawHeight * imageRatio;
+      offsetX = (viewportWidth - drawWidth) / 2;
+      offsetY = 0;
+    } else {
+      drawWidth = viewportWidth;
+      drawHeight = drawWidth / imageRatio;
+      offsetX = 0;
+      offsetY = (viewportHeight - drawHeight) / 2;
     }
 
-    try {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      
-      const imgRatio = img.naturalWidth / img.naturalHeight;
-      const canvasRatio = viewportWidth / viewportHeight;
-      
-      let drawWidth, drawHeight, offsetX, offsetY;
-      
-      if (imgRatio > canvasRatio) {
-        drawHeight = viewportHeight;
-        drawWidth = drawHeight * imgRatio;
-        offsetX = (viewportWidth - drawWidth) / 2;
-        offsetY = 0;
-      } else {
-        drawWidth = viewportWidth;
-        drawHeight = drawWidth / imgRatio;
-        offsetX = 0;
-        offsetY = (viewportHeight - drawHeight) / 2;
-      }
-      
-      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-      
-      lastFrameRef.current = idx;
-      maintainWindow(idx);
-    } catch (error) {
-      console.error('Error drawing frame:', error);
-    }
-  }, [frameCount, maintainWindow]);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+  }, []);
 
-  // Установка размера canvas
   const setCanvasSize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    
-    const ctx = canvas.getContext("2d", { 
+
+    const context = canvas.getContext("2d", { 
       alpha: false,
-      desynchronized: true,
-      willReadFrequently: false
+      desynchronized: true 
     });
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    
-    ctxRef.current = ctx;
-    
-    const currentIdx = lastFrameRef.current > 0 ? lastFrameRef.current : 1;
-    drawFrame(currentIdx);
-  }, [drawFrame]);
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    contextRef.current = context;
 
-  // Начальная загрузка
-  useEffect(() => {
-    if (!isSequence) return;
-    if (typeof window !== "undefined" && window.innerWidth < 768) return;
-
-    loadImage(1);
-    
-    for (let i = 2; i <= Math.min(20, frameCount); i++) {
-      setTimeout(() => loadImage(i), i * 10);
+    if (imageCache.current[1]) {
+      updateImage(1);
     }
+  }, [updateImage]);
 
-    return () => {
-      cache.current.clear();
-      inflight.current.clear();
+  const preloadImages = useCallback(() => {
+    console.log('📦 Начинаем предзагрузку...');
+    let loadedCount = 0;
+
+    const firstImg = new Image();
+    firstImg.onload = () => {
+      imageCache.current[1] = firstImg;
+      console.log('✅ Первый кадр загружен');
+      setFirstFrameLoaded(true);
+      updateImage(1);
+      loadedCount++;
+
+      for (let i = 2; i <= frameCount; i++) {
+        const img = new Image();
+        
+        img.onload = () => {
+          loadedCount++;
+          imageCache.current[i] = img;
+          
+          if (loadedCount % 50 === 0) {
+            console.log(`⏳ Загружено ${loadedCount}/${frameCount} кадров`);
+          }
+          
+          if (loadedCount === frameCount) {
+            console.log('✅ Все кадры загружены!');
+            setIsLoaded(true);
+          }
+        };
+        
+        img.src = currentFrame(i);
+      }
     };
-  }, [isSequence, frameCount, loadImage]);
+    
+    firstImg.src = currentFrame(1);
+  }, [frameCount, currentFrame, updateImage]);
 
-  // GSAP анимации
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
+
+    setCanvasSize();
+    preloadImages();
+
+    window.addEventListener("resize", setCanvasSize);
+    return () => window.removeEventListener("resize", setCanvasSize);
+  }, [setCanvasSize, preloadImages]);
+
   useGSAP(() => {
     if (typeof window === "undefined" || window.innerWidth < 768) return;
-    if (!isSequence) return;
+    if (!isLoaded) return;
 
-    const mm = gsap.matchMedia();
+    console.log('🚀 Запуск GSAP');
 
-    mm.add("(min-width: 768px)", () => {
-      const section = desktopRoot.current;
-      if (!section) return;
+    const section = sectionRef.current;
+    if (!section) return;
 
-      const firstText = section.querySelector(".text-item--first");
-      const secondText = section.querySelector(".text-item--second");
-      const thirdText = section.querySelector(".text-item--third");
-      const fourthText = section.querySelector(".text-item--fourth");
+    // Длина скролла для секции
+    const scrollLength = "+=1500vh";
 
-      if (!firstText || !secondText || !thirdText || !fourthText) return;
-
-      gsap.set([secondText, thirdText, fourthText], {
-        opacity: 0,
-        yPercent: 10,
-        filter: "blur(4px)",
-      });
-      gsap.set(firstText, { opacity: 1, yPercent: 0, filter: "blur(0px)" });
-
-      setCanvasSize();
-      
-      const handleResize = () => {
-        requestAnimationFrame(setCanvasSize);
-      };
-      
-      window.addEventListener("resize", handleResize);
-
-      const mainScrollTrigger = {
-        trigger: section,
-        start: "top top",
-        end: "+=1500vh",
-        pin: true,
-        anticipatePin: 1,
-        scrub: 0.8,
-        fastScrollEnd: true,
-      };
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "+=1500vh",
-          scrub: 0.8,
-        },
-      });
-
-      tl.to({}, { duration: 600 })
-        .to(firstText, {
-          opacity: 0,
-          yPercent: -10,
-          filter: "blur(6px)",
-          ease: "power2.inOut",
-          duration: 100,
-        }, 600)
-        .fromTo(secondText,
-          { opacity: 0, yPercent: 10, filter: "blur(6px)" },
-          { opacity: 1, yPercent: 0, filter: "blur(0px)", ease: "power2.out", duration: 50 },
-          650
-        )
-        .to({}, { duration: 600 }, 700)
-        .to(secondText, {
-          opacity: 0,
-          yPercent: -10,
-          filter: "blur(6px)",
-          ease: "power2.inOut",
-          duration: 100,
-        }, 1300)
-        .fromTo(thirdText,
-          { opacity: 0, yPercent: 10, filter: "blur(6px)" },
-          { opacity: 1, yPercent: 0, filter: "blur(0px)", ease: "power2.out", duration: 50 },
-          1350
-        )
-        .to({}, { duration: 600 }, 1400)
-        .to(thirdText, {
-          opacity: 0,
-          yPercent: -10,
-          filter: "blur(6px)",
-          ease: "power2.inOut",
-          duration: 100,
-        }, 2000)
-        .fromTo(fourthText,
-          { opacity: 0, yPercent: 10, filter: "blur(6px)" },
-          { opacity: 1, yPercent: 0, filter: "blur(0px)", ease: "power2.out", duration: 50 },
-          2050
-        )
-        .to({}, { duration: 450 }, 2100);
-
-      if (isSequence && canvasRef.current) {
-        const state = { frame: 1 };
-        
-        gsap.to(state, {
-          frame: frameCount,
-          ease: "none",
-          onUpdate: () => {
-            requestAnimationFrame(() => {
-              drawFrame(state.frame);
-            });
-          },
-          scrollTrigger: {
-            ...mainScrollTrigger,
-            scrub: 1,
-          },
-        });
-      }
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-        ScrollTrigger.getAll().forEach(st => st.kill());
-      };
+    // Pin секции
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: scrollLength,
+      pin: true,
+      anticipatePin: 1,
+      scrub: 0.5,
+      onUpdate: (self) => {
+        // Рассчитываем кадр на основе прогресса ВНУТРИ секции
+        const progress = self.progress;
+        const targetFrame = Math.round(1 + progress * (frameCount - 1));
+        updateImage(targetFrame);
+      },
     });
 
-    return () => mm.revert();
+    return () => {
+      ScrollTrigger.getAll().forEach(st => st.kill());
+    };
   }, { 
-    scope: desktopRoot, 
-    dependencies: [isSequence, frameCount, setCanvasSize, drawFrame] 
+    scope: sectionRef, 
+    dependencies: [isLoaded, frameCount, updateImage] 
   });
 
   return (
     <>
-      {/* Мобильная версия */}
-      <section className="hero hero--mobile" role="banner" aria-label="Hero">
-        <div className="hero__bg-mobile"></div>
+      <section className="hero hero--mobile" role="banner">
+        <div className="hero__bg-mobile" />
         <div className="hero__content-mobile">
           <h1 className="hero__title-mobile">ART‑Space</h1>
-          <p className="hero__subtitle-mobile">
-            Международный выставочный комплекс
-          </p>
+          <p className="hero__subtitle-mobile">Международный выставочный комплекс</p>
           <p className="hero__location-mobile">Тверская 9, Москва</p>
-          
-          {/* Обе кнопки с Next.js Link */}
           <div className="hero__buttons-mobile">
-            <Link 
-              href="https://tickets.art-space.world/#events" 
-              className="hero__btn hero__btn--primary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+            <Link href="https://tickets.art-space.world/#events" className="hero__btn hero__btn--primary" target="_blank" rel="noopener noreferrer">
               Билеты
             </Link>
             <Link href="/events" className="hero__btn hero__btn--secondary">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
               Афиша
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Десктопная версия */}
-      <section ref={desktopRoot} className="hero hero--desktop" role="banner" aria-label="Hero">
-        <div className="hero__media">
-          <canvas ref={canvasRef} id="heroCanvas" />
-        </div>
+      <section ref={sectionRef} className="hero hero--desktop" role="banner">
+        {!firstFrameLoaded && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+            <p>Загрузка...</p>
+          </div>
+        )}
+        
+        <canvas ref={canvasRef} className="hero__canvas" />
 
         <div className="text-swap-container">
           <h1 className="text-item text-item--first">ART‑Space</h1>
-          <h1 className="text-item text-item--second">Exhibition</h1>
-          <h1 className="text-item text-item--third">Tverskaya 9</h1>
-          <h1 className="text-item text-item--fourth">Moscow</h1>
+          <h3 className="text-item text-item--first">Международный</h3>
+          <h3 className="text-item text-item--first">Выставочный</h3>
+          <h3 className="text-item text-item--first">Комплекс</h3>
         </div>
       </section>
     </>

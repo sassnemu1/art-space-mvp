@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
+
 import MenuButton from "../NavbarComponents/MenuButton";
-// import MenuOverlay from "../NavbarComponents/MenuOverlay";
 
 import { useMenuControl } from "../../../hooks/useMenuControl";
 
 import './MobileMenu.css';
+
 
 export default function MobileMenu({ menuData }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,7 +40,7 @@ export default function MobileMenu({ menuData }) {
             <ul className="mobile-menu-list">
               {menuLinks.map((link, index) => (
                 <li key={index} className="mobile-menu-item">
-                  <a 
+                  <Link 
                     href={link.href} 
                     className="mobile-menu-link"
                     onClick={handleLinkClick}
@@ -47,7 +49,7 @@ export default function MobileMenu({ menuData }) {
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
