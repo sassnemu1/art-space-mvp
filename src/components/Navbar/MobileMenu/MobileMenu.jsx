@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 
 import MenuButton from "../NavbarComponents/MenuButton";
+import MenuOverlay from "../NavbarComponents/MenuOverlay";
 
 import { useMenuControl } from "../../../hooks/useMenuControl";
 
@@ -66,10 +67,10 @@ export default function MobileMenu({ menuData }) {
         </div>
       </div>
 
-      {/* <MenuOverlay 
+      <MenuOverlay 
         isActive={isMenuOpen} 
         onClick={() => setIsMenuOpen(false)}
-      /> */}
+      />
     </>
   );
 }

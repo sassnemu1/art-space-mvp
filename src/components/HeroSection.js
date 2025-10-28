@@ -8,131 +8,103 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroSection({ frameCount = 300 }) {
+export default function HeroSection({ frameCount = 280 }) {
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
-  
-  const imageCache = useRef([]);
+
+  const imageCache = useRef({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
 
+  // AVIF кадры
   const currentFrame = useCallback(
     (index) => `/seq/output_${String(index).padStart(4, "0")}.webp`,
     []
   );
 
-  const updateImage = useCallback((index) => {
-    const canvas = canvasRef.current;
-    const context = contextRef.current;
-    if (!canvas || !context) return;
-
-    const img = imageCache.current[index];
-    if (!img) return;
-
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    
-    const canvasRatio = viewportWidth / viewportHeight;
-    const imageRatio = img.width / img.height;
-
-    let drawWidth, drawHeight, offsetX, offsetY;
-
-    if (imageRatio > canvasRatio) {
-      drawHeight = viewportHeight;
-      drawWidth = drawHeight * imageRatio;
-      offsetX = (viewportWidth - drawWidth) / 2;
-      offsetY = 0;
-    } else {
-      drawWidth = viewportWidth;
-      drawHeight = drawWidth / imageRatio;
-      offsetX = 0;
-      offsetY = (viewportHeight - drawHeight) / 2;
-    }
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-  }, []);
-
   const setCanvasSize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
 
-    const context = canvas.getContext("2d", { 
-      alpha: false,
-      desynchronized: true 
-    });
+    const context = canvas.getContext("2d", { alpha: false, desynchronized: true });
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
     contextRef.current = context;
+  }, []);
 
-    if (imageCache.current[1]) {
-      updateImage(1);
+  const drawImage = useCallback((img) => {
+    const canvas = canvasRef.current;
+    const context = contextRef.current;
+    if (!canvas || !context || !img) return;
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const canvasRatio = vw / vh;
+    const imgRatio = img.width / img.height;
+
+    let dw, dh, dx, dy;
+
+    if (imgRatio > canvasRatio) {
+      dh = vh;
+      dw = dh * imgRatio;
+      dx = (vw - dw) / 2;
+      dy = 0;
+    } else {
+      dw = vw;
+      dh = dw / imgRatio;
+      dx = 0;
+      dy = (vh - dh) / 2;
     }
-  }, [updateImage]);
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, dx, dy, dw, dh);
+  }, []);
 
   const preloadImages = useCallback(() => {
-    console.log('📦 Начинаем предзагрузку...');
     let loadedCount = 0;
-
     const firstImg = new Image();
     firstImg.onload = () => {
       imageCache.current[1] = firstImg;
-      console.log('✅ Первый кадр загружен');
       setFirstFrameLoaded(true);
-      updateImage(1);
+      drawImage(firstImg);
       loadedCount++;
 
+      // ленивое предзагрузка остальных кадров
       for (let i = 2; i <= frameCount; i++) {
         const img = new Image();
-        
         img.onload = () => {
-          loadedCount++;
           imageCache.current[i] = img;
-          
-          if (loadedCount % 50 === 0) {
-            console.log(`⏳ Загружено ${loadedCount}/${frameCount} кадров`);
-          }
-          
-          if (loadedCount === frameCount) {
-            console.log('✅ Все кадры загружены!');
-            setIsLoaded(true);
-          }
+          loadedCount++;
+          if (loadedCount === frameCount) setIsLoaded(true);
         };
-        
         img.src = currentFrame(i);
       }
     };
-    
     firstImg.src = currentFrame(1);
-  }, [frameCount, currentFrame, updateImage]);
+  }, [frameCount, currentFrame, drawImage]);
 
   useEffect(() => {
     if (typeof window === "undefined" || window.innerWidth < 768) return;
 
     setCanvasSize();
     preloadImages();
-
     window.addEventListener("resize", setCanvasSize);
     return () => window.removeEventListener("resize", setCanvasSize);
   }, [setCanvasSize, preloadImages]);
 
   useGSAP(() => {
-    if (typeof window === "undefined" || window.innerWidth < 768) return;
-    if (!isLoaded) return;
-
-    console.log('🚀 Запуск GSAP');
+    if (!isLoaded || typeof window === "undefined") return;
 
     const section = sectionRef.current;
     if (!section) return;
 
-    // Длина скролла для секции
     const scrollLength = "+=800vh";
+    let lastFrame = 1;
 
-    // Pin секции
     ScrollTrigger.create({
       trigger: section,
       start: "top top",
@@ -141,20 +113,16 @@ export default function HeroSection({ frameCount = 300 }) {
       anticipatePin: 1,
       scrub: 0.5,
       onUpdate: (self) => {
-        // Рассчитываем кадр на основе прогресса ВНУТРИ секции
-        const progress = self.progress;
-        const targetFrame = Math.round(1 + progress * (frameCount - 1));
-        updateImage(targetFrame);
+        const targetFrame = Math.round(1 + self.progress * (frameCount - 1));
+        if (targetFrame !== lastFrame && imageCache.current[targetFrame]) {
+          requestAnimationFrame(() => drawImage(imageCache.current[targetFrame]));
+          lastFrame = targetFrame;
+        }
       },
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach(st => st.kill());
-    };
-  }, { 
-    scope: sectionRef, 
-    dependencies: [isLoaded, frameCount, updateImage] 
-  });
+    return () => ScrollTrigger.getAll().forEach((st) => st.kill());
+  }, { scope: sectionRef, dependencies: [isLoaded, frameCount, drawImage] });
 
   return (
     <>
@@ -182,9 +150,7 @@ export default function HeroSection({ frameCount = 300 }) {
             <p>Загрузка...</p>
           </div>
         )}
-        
         <canvas ref={canvasRef} className="hero__canvas" />
-
         <div className="text-swap-container">
           <h1 className="text-item text-item--first">ART‑Space</h1>
           <h3 className="text-item text-item--first">Международный</h3>

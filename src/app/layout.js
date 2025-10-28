@@ -3,7 +3,7 @@ import ScrollSmootherWrapper from '../components/ScrollSmootherWrapper';
 
 import "./globals.css";
 
-import LoaderGate from "@/components/Loading/LoaderGate/LoaderGate";
+// import LoaderGate from "@/components/Loading/LoaderGate/LoaderGate";
 import Navbar from '@/components/Navbar/Navbar'
 
 const geistSans = Geist({
@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = { 
-  title: "ART-Space Landing", 
-  description: "Scroll-driven hero" 
+  title: "ART SPACE", 
+  description: "Международный выставочный центр Москва, Тверская, 9" 
 };
 
 export default function RootLayout({ children }) {
@@ -38,12 +38,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;800&display=swap" rel="stylesheet" />
-        {/* <link rel="preload" as="image" href="/seq/output_0001.webp" imageSrcSet="/seq/output_0001.webp" /> */}
-
-
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <LoaderGate />
+        {/* <LoaderGate /> */}
         <Navbar />
         <ScrollSmootherWrapper>
           {children}

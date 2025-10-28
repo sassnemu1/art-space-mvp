@@ -5,6 +5,8 @@ import VeraAwardSection from '@/components/HomePage/VeraAwardSection/VeraAwardSe
 import Footer from '@/components/Footer/Footer';
 import NewsSection from '@/components/HomePage/NewsSection/NewsSection';
 
+import HeroAdaptive from "@/components/HeroAdaptive";
+
 // import LoaderGate from "@/components/Loading/LoaderGate/LoaderGate";
 
 // import { getHomePageData, testWordPressConnection } from '../lib/wordpress';
@@ -80,14 +82,7 @@ export default async function HomePage() {
   // const data = homeData 
   return (
     <>
-      {/* <HeroSection 
-        mode={data.heroFields?.heroMode}
-        frameCount={data.heroFields?.heroFrameCount}
-      /> */}
-      <HeroSection 
-        mode={data.mode}
-        frameCount={data.frameCount}
-      />
+      <HeroAdaptive />
       
       <ContentSection
         id="about-section"
