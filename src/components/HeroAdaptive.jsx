@@ -6,6 +6,7 @@ import HeroSectionLite from "@/components/HeroSectionLite"; // лёгкая ве
 
 export default function HeroAdaptive() {
   const [isPowerful, setIsPowerful] = useState(null);
+
   const data = {
     mode: "sequence",
     frameCount: 280,
