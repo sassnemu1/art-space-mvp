@@ -1,13 +1,10 @@
-import HeroSection from '../components/HeroSection';
+import HeroAdaptive from "@/components/HeroAdaptive";
+
 import ContentSection from '../components/HomePage/ContentSection/ContentSection';
 import TimelineSection from '@/components/HomePage/TimelineSection/TimelineSection';
 import VeraAwardSection from '@/components/HomePage/VeraAwardSection/VeraAwardSection';
 import Footer from '@/components/Footer/Footer';
 import NewsSection from '@/components/HomePage/NewsSection/NewsSection';
-
-import HeroAdaptive from "@/components/HeroAdaptive";
-
-// import LoaderGate from "@/components/Loading/LoaderGate/LoaderGate";
 
 // import { getHomePageData, testWordPressConnection } from '../lib/wordpress';
 
@@ -29,7 +26,7 @@ const exhibitionsData = [
     dates: "24.10 - 30.11",
     year: "2025",
     description: "Экспонаты из семейной коллекции Франсин Кусто (Франция)",
-    image: "/exhibitions/kusto-v-rossii.png",
+    image: "/exhibitions/kusto-v-rossii.webp",
     category: "Историческое событие",
     location: "4 Этаж",
     link: "/events/kusto/"
@@ -40,7 +37,7 @@ const exhibitionsData = [
     dates: "30.10 - 6.11",
     year: "2025",
     description: "Выставка цифрового искусства, созданного с использованием AI.",
-    image: "/exhibitions/ai-summit.png",
+    image: "/exhibitions/ai-summit.webp",
     category: "AI Конфиренция",
     location: "Все залы",
     link: "/events/ai-summit"
@@ -62,7 +59,7 @@ const exhibitionsData = [
     dates: "20.11 - 6.12",
     year: "2025",
     description: "Масштабная выставка культурного наследия Востока.",
-    image: "/exhibitions/tri-vostoka.png",
+    image: "/exhibitions/tri-vostoka.webp",
     category: "Культурное наследие",
     location: "3 этаж",
     link: "/events/tri-vostoka/"
@@ -107,12 +104,3 @@ export default async function HomePage() {
 // Настройки статической генерации
 export const revalidate = 60; // ISR каждую минуту
 
-// SEO метаданные из WordPress
-// export async function generateMetadata() {
-//   const homeData = await getPageData();
-  
-//   return {
-//     title: homeData?.seo?.title || 'ART-Space | Искусство будущего',
-//     description: homeData?.seo?.metaDesc || 'Цифровое искусство и интерактивные технологии',
-//   };
-// }

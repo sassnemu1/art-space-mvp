@@ -6,6 +6,7 @@ import Link from "next/link";
 import Footer from '@/components/Footer/Footer';
 
 import './events.css';
+import Head from "next/head";
 
 
 export default function EventsPage() {
@@ -20,7 +21,7 @@ export default function EventsPage() {
       date: "24 октября - 30 ноября 2025",
       shortDate: "24.10 - 30.11",
       description: "Впервые в России — экспонаты из семейной коллекции Франсин Кусто (Франция). Уникальная возможность увидеть предметы из легендарных экспедиций.",
-      image: "/exhibitions/kusto-v-rossii.png",
+      image: "/exhibitions/kusto-v-rossii.webp",
       highlights: [
         "Предметы из легендарных экспедиций команды Кусто",
         "Изобретения великого исследователя",
@@ -36,7 +37,7 @@ export default function EventsPage() {
       date: "30 октября – 6 ноября 2025",
       shortDate: "30.10 - 6.11",
       description: "Весь комплекс МВК Art-Space трансформируется в иммерсивное путешествие по миру искусственного интеллекта. Каждый этаж — отдельная тема.",
-      image: "/exhibitions/ai-summit.png",
+      image: "/exhibitions/ai-summit.webp",
       highlights: [
         "Лекции и мастер-классы с ведущими экспертами",
         "Интеграция флагманских продуктов от tech-компаний",
@@ -52,7 +53,7 @@ export default function EventsPage() {
       date: "20 ноября – 6 декабря 2025",
       shortDate: "20.11 - 6.12",
       description: "Путешествие по культурным традициям трех великих цивилизаций: Китая, Японии и Индии. Философия, искусство и созерцание.",
-      image: "/exhibitions/tri-vostoka.png",
+      image: "/exhibitions/tri-vostoka.webp",
       highlights: [
         "Восточные философии и поиск гармонии",
         "Каллиграфия как медитативная практика",
@@ -127,6 +128,57 @@ export default function EventsPage() {
   }, [activeTab]);
 
   return (
+    <>
+    <Head>
+      <title>Афиша событий — ART SPACE, Москва</title>
+        <meta
+          name="description"
+          content="Афиша выставок, лекций и конференций в ART SPACE, Тверская 9, Москва. Узнайте обо всех мероприятиях современного искусства."
+        />
+        <meta
+          name="keywords"
+          content="
+            ART SPACE афиша, 
+            выставки Москва, 
+            мероприятия ART SPACE, 
+            современное искусство Москва, 
+            арт события Москва, 
+            афиша выставок Москва, 
+            лекции ART SPACE, 
+            конференции ART SPACE
+          "
+        />
+
+        {/* JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Event",
+            name: "Выставки и лекции ART SPACE",
+            startDate: "2025-11-01T10:00",
+            endDate: "2025-11-30T20:00",
+            location: {
+              "@type": "Place",
+              name: "ART SPACE",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Тверская, 9",
+                addressLocality: "Москва",
+                addressCountry: "RU",
+              },
+            },
+            image: ["https://art-space.site/images/event-og.jpg"],
+            description: "Афиша выставок, лекций и конференций в ART SPACE, Москва.",
+            organizer: {
+              "@type": "Organization",
+              name: "ART SPACE",
+              url: "https://art-space.site"
+            }
+          })}}
+        />
+    </Head>
+    
     <main className="events-page">
       {/* Hero Section */}
       <section className="events-hero">
@@ -226,5 +278,8 @@ export default function EventsPage() {
       {/* ✅ Footer с key для пересоздания */}
       <Footer key={activeTab} />
     </main>
+    </>
   );
 }
+
+
