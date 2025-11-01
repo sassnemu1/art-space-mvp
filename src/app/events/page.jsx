@@ -8,22 +8,22 @@ import Footer from '@/components/Footer/Footer';
 import './events.css';
 import Head from "next/head";
 
-export const metadata = {
-  title: "Афиша событий — ART SPACE, Москва",
-  description: "Выставки, лекции и конференции в ART SPACE, Тверская 9, Москва.",
-  keywords: [
-    "афиша ART SPACE",
-    "выставки Москва",
-    "мероприятия ART SPACE",
-    "современное искусство Москва",
-  ],
-  openGraph: {
-    title: "Афиша событий — ART SPACE",
-    description: "Выставки, лекции и конференции в ART SPACE, Москва.",
-    url: "https://art-space.site/events",
-    images: [{ url: "https://art-space.site/og-events.jpg" }],
-  },
-};
+// export const metadata = {
+//   title: "Афиша событий — ART SPACE, Москва",
+//   description: "Выставки, лекции и конференции в ART SPACE, Тверская 9, Москва.",
+//   keywords: [
+//     "афиша ART SPACE",
+//     "выставки Москва",
+//     "мероприятия ART SPACE",
+//     "современное искусство Москва",
+//   ],
+//   openGraph: {
+//     title: "Афиша событий — ART SPACE",
+//     description: "Выставки, лекции и конференции в ART SPACE, Москва.",
+//     url: "https://art-space.site/events",
+//     images: [{ url: "https://art-space.site/og-events.jpg" }],
+//   },
+// };
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState('all');
