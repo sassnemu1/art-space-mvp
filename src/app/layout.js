@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = { 
-  title: "ART SPACE — Международный выставочный центр", 
+  title: "ART SPACE — Международный выставочный комплекс", 
   description: "Главная площадка современного искусства в Москве. Тверская, 9.",
   keywords: [
     "ART Space",
@@ -53,7 +53,7 @@ export const metadata = {
     "конференция Москва",
   ],
   openGraph: {
-    title: "ART SPACE — Международный выставочный центр",
+    title: "ART SPACE — Международный выставочный комплекс",
     description: "Главная площадка современного искусства в Москве. Тверская, 9.",
     url: "https://art-space.site",
     siteName: "ART SPACE",
@@ -88,7 +88,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ru-RU">
       <head>
-        <meta name="keywords" content="ART SPACE, выставочный центр Москва, современное искусство, арт галерея Москва" />
+        {/* <meta name="keywords" content="ART SPACE, выставочный центр Москва, современное искусство, арт галерея Москва" /> */}
 
         {/* Favicon и Touch Icons */}
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -106,7 +106,7 @@ export default function RootLayout({ children }) {
           "@type": "Organization",
           name: "ART SPACE",
           url: "https://art-space.site",
-          logo: "https://art-space.site/logo.png",
+          logo: "https://art-space.site/favicon.ico",
           address: {
             "@type": "PostalAddress",
             streetAddress: "Тверская, 9",
@@ -118,7 +118,7 @@ export default function RootLayout({ children }) {
         {/* Yandex Отслеживание и Google Search*/}
         <meta name="yandex-verification" content="b8aa8062e017e490" />
         <meta name="google-site-verification" content="pTRVR2444HOGBjHFowrOD_I8bs8kuYc2ExacJWdi2lg" />
-</head>
+      </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} ${tektur.variable}`}>
         {/* <LoaderGate /> */}
